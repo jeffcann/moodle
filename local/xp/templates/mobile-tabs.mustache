@@ -1,0 +1,28 @@
+{{=<% %>=}}
+<%#enabled%>
+<div class="mma-xp-tabs-bar header-md" margin-bottom>
+    <ion-grid no-padding>
+        <ion-row>
+            <ion-col no-padding>
+                <button ion-button clear full icon-left no-margin core-site-plugins-new-content component="local_xp" method="state_page" samePage="true" [args]="{courseid: <% courseid %>}" <%#stateactive%>active<%/stateactive%>>
+                    <ion-icon name="person"></ion-icon> My level
+                </button>
+            </ion-col>
+            <%#hasinfo%>
+            <ion-col no-padding>
+                <button ion-button clear full icon-left no-margin core-site-plugins-new-content component="local_xp" method="info_page" samePage="true" [args]="{courseid: <% courseid %>}" <%#infoactive%>active<%/infoactive%>>
+                    <ion-icon name="ios-information-circle"></ion-icon> Info
+                </button>
+            </ion-col>
+            <%/hasinfo%>
+            <%#hasladder%>
+            <ion-col no-padding>
+                <button ion-button clear full icon-left no-margin core-site-plugins-new-content component="local_xp" method="ladder_page" samePage="true" [args]="{courseid: <% courseid %>}" <%#ladderactive%>active<%/ladderactive%>>
+                    <ion-icon name="trophy"></ion-icon> Ladder
+                </button>
+            </ion-col>
+            <%/hasladder%>
+        </ion-row>
+    </ion-grid>
+</div>
+<%/enabled%>
