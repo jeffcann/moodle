@@ -79,6 +79,8 @@ class manage_templates_page implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
+        global $USER;
+
         $data = new stdClass();
         $data->pagecontextid = $this->pagecontext->id;
         $data->templates = array();
@@ -92,6 +94,7 @@ class manage_templates_page implements renderable, templatable {
             $data->navigation[] = $output->render($button);
         }
         $data->canmanage = template::can_manage_context($this->pagecontext);
+        $data->isadmin = is_siteadmin($USER);
 
         return $data;
     }

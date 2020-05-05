@@ -42,9 +42,11 @@
     <thead>
         <tr>
             <th scope="col">{{#str}}templatename, tool_lp{{/str}}</th>
+            {{#isadmin}}
             <th scope="col">{{#str}}category, tool_lp{{/str}}</th>
             <th scope="col">{{#str}}cohorts, core_cohort{{/str}}</th>
             <th scope="col">{{#str}}userplans, core_competency{{/str}}</th>
+            {{/isadmin}}
             {{#canmanage}}
             <th scope="col">{{#str}}actions, tool_lp{{/str}}</th>
             {{/canmanage}}
@@ -54,11 +56,20 @@
         {{#templates}}
         <tr class="drag-samenode" data-templateid="{{id}}">
             <td><a href="{{pluginbaseurl}}/templatecompetencies.php?templateid={{id}}&amp;pagecontextid={{pagecontextid}}">{{{shortname}}}</a></span> {{^visible}}{{#str}}hiddenhint, tool_lp{{/str}}{{/visible}}</td>
+            {{#isadmin}}
             <td>{{contextnamenoprefix}}</td>
             <td><a class="template-cohorts" href="{{pluginbaseurl}}/template_cohorts.php?id={{id}}&amp;pagecontextid={{pagecontextid}}">{{cohortscount}}</a></td>
             <td><a class="template-userplans" href="{{pluginbaseurl}}/template_plans.php?id={{id}}&amp;pagecontextid={{pagecontextid}}">{{planscount}}</a></td>
+            {{/isadmin}}
             <td>
             {{#canmanage}}
+                {{^isadmin}}
+                    <a href="{{pluginbaseurl}}/template_plans.php?id={{id}}&amp;pagecontextid={{pagecontextid}}">
+                        {{#pix}}t/add{{/pix}} {{#str}}createlearningplans, tool_lp{{/str}}
+                    </a>
+                {{/isadmin}}
+            {{/canmanage}}
+            {{#isadmin}}
             <ul class="templateactions">
                 <li>
                     <a href="#">{{#str}}edit{{/str}}</a><b class="caret"></b>
@@ -91,7 +102,7 @@
                     </ul>
                 </li>
             </ul>
-            {{/canmanage}}
+            {{/isadmin}}
             </td>
         </tr>
         {{/templates}}
