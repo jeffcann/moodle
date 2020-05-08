@@ -110,8 +110,8 @@ It is advised to check the plugin\'s _Log_ page to identify which events are tri
 
 Additional resources:
 
-- [How are experience points calculated?](https://levelup.branchup.tech/docs/article/how-are-experience-points-calculated)
-- [Troubleshooting rules](https://levelup.branchup.tech/docs/article/event-rule-not-working)
+- [How are experience points calculated?](https://levelup.plus/docs/article/how-are-experience-points-calculated?ref=blockxp_help)
+- [Troubleshooting rules](https://levelup.plus/docs/article/event-rule-not-working?ref=blockxp_help)
 ';
 $string['event_user_leveledup'] = 'User leveled up';
 $string['eventis'] = 'The event is {$a}';
@@ -168,6 +168,7 @@ $string['navreport'] = 'Report';
 $string['navrules'] = 'Rules';
 $string['navsettings'] = 'Settings';
 $string['navvisuals'] = 'Visuals';
+$string['nologsrecordedyet'] = 'Logs have not been recorded yet.';
 $string['participant'] = 'Participant';
 $string['perpagecolon'] = 'Per page:';
 $string['pickaconditiontype'] = 'Pick a condition type';
@@ -206,7 +207,7 @@ $string['ranking'] = 'Ranking';
 $string['ranking_help'] = 'The rank is the absolute position of the current user in the ladder. The relative rank is the difference in experience points between a user and their neighbours.';
 $string['reallydeleteuserstate'] = 'Deleting a user is only useful to remove them from the ladder. For any other reasons, we recommend setting their points to 0 instead. Note that deleting them does not affect their ability to earn points in the future.
 
-Importantly, when are using _Level up!_ for the whole site, deleting them will make them disappear from the report, in which case you will not be able to re-assign them points. However, if you are using _Level up!_ per course, the student may still appear in the report if they are enrolled in the course.
+Importantly, when using _Level up!_ for the whole site, deleting them will make them disappear from the report, in which case you will not be able to re-assign them points. However, if you are using _Level up!_ per course, the student may still appear in the report if they are enrolled in the course.
 
 Do you really want to delete the points of this user?';
 $string['reallyresetallcoursestodefaults'] = 'Really reset all courses rules to the default rules? This action is not reversible.';
@@ -215,6 +216,8 @@ $string['reallyresetdata'] = 'Really reset the levels and points of everyone in 
 $string['reallyresetgroupdata'] = 'Really reset the levels and points of everyone in this group?';
 $string['reallyreverttopluginsdefaults'] = 'Really reset the default rules to the defaults suggested by the plugin? This action is not reversible.';
 $string['recentrewards'] = 'Recent rewards';
+$string['reportisempty'] = 'The report is empty, student have yet to earn points.';
+$string['reportisemptyenrolstudents'] = 'The report is empty, have students been enrolled in this course?';
 $string['resetcoursedata'] = 'Reset course data';
 $string['resetallcoursestodefaults'] = 'Reset all courses to defaults';
 $string['resetallcoursestodefaultsintro'] = 'Click the button below to reset all courses to the above defaults.';

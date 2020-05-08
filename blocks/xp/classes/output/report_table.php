@@ -37,6 +37,7 @@ use renderer_base;
 use stdClass;
 use table_sql;
 use user_picture;
+use block_xp\di;
 use block_xp\local\course_world;
 use block_xp\local\xp\course_user_state_store;
 
@@ -103,6 +104,7 @@ class report_table extends table_sql {
         $this->no_sorting('userpic');
         $this->no_sorting('progress');
         $this->collapsible(false);
+        $this->set_attribute('class', 'block_xp-report-table');
     }
 
     /**
@@ -341,6 +343,25 @@ class report_table extends table_sql {
      */
     public function get_sql_sort() {
         return static::construct_order_by($this->get_sort_columns(), []);
+    }
+
+    /**
+     * Override to rephrase.
+     *
+     * @return void
+     */
+    public function print_nothing_to_display() {
+        $issite = di::get('config')->get('context') == CONTEXT_SYSTEM && $this->world->get_courseid() == SITEID;
+
+        echo \html_writer::div(
+            \block_xp\di::get('renderer')->notification_without_close(
+                get_string($issite ? 'reportisempty' : 'reportisemptyenrolstudents', 'block_xp'),
+                'info'
+            ),
+            '',
+            ['style' => 'margin: 1em 0']
+        );
+
     }
 
 }
