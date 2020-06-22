@@ -34,12 +34,14 @@ $warning-outline: #a6670e;
 
 // Options
 $enable-rounded: false !default;
+$enable-responsive-font-sizes: true !default;
 
 // Body
 $body-color:    $gray-800 !default;
 
 // Fonts
 $font-size-base: 0.9375rem !default;
+$rfs-base-font-size: 0.9rem !default;
 $headings-font-weight:   300 !default;
 
 // Navbar
@@ -55,10 +57,18 @@ $breadcrumb-bg:                     transparent !default;
 $breadcrumb-divider: "/" !default;
 $breadcrumb-divider-rtl: "/" !default;
 
+// Floating elements positions
+$gototop-bottom-position: 50px !default;
+
 // Alerts
 $alert-border-width:                0 !default;
 
 $card-group-margin: .25rem;
+
+// Custom control size
+$custom-control-indicator-size: 1.25rem;
+
+$input-btn-focus-color: rgba($primary, .75) !default;
 
 // stylelint-disable
 $theme-colors: () !default;
@@ -85,15 +95,11 @@ $theme-colors: map-merge((
 
 body {
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
-}
-
-.filemanager-container,
-.filepicker-filelist {
-    @extend .border;
 }
 
 // Rounded user pictures
@@ -117,4 +123,4 @@ body {
     @include button-outline-variant($warning-outline);
 }
 
-@include bg-variant(".bg-gray", $gray-200);
+@include bg-variant(".bg-gray", $gray-200, true);

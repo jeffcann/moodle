@@ -2749,8 +2749,6 @@ class core_accesslib_testcase extends advanced_testcase {
             $bi = $generator->create_block('online_users', array('parentcontextid'=>$usercontext->id));
             $testblocks[] = $bi->id;
         }
-        // Deleted user - should be ignored everywhere, can not have context.
-        $generator->create_user(array('deleted'=>1));
 
         // Add block to frontpage.
         $bi = $generator->create_block('online_users', array('parentcontextid'=>$frontpagecontext->id));
@@ -4308,6 +4306,37 @@ class core_accesslib_testcase extends advanced_testcase {
         $contexts->cat2->set_locked(true);
         $users = get_users_by_capability($contexts->cat1course1forum, $caput);
         $this->assertArrayHasKey($uut->id, $users);
+    }
+
+    /**
+     * Test require_all_capabilities.
+     */
+    public function test_require_all_capabilities() {
+        global $DB;
+
+        $this->resetAfterTest();
+
+        $course = $this->getDataGenerator()->create_course();
+        $coursecontext = context_course::instance($course->id);
+        $teacherrole = $DB->get_record('role', array('shortname' => 'editingteacher'), '*', MUST_EXIST);
+        $teacher = $this->getDataGenerator()->create_user();
+        role_assign($teacherrole->id, $teacher->id, $coursecontext);
+
+        // Note: Here are used default capabilities, the full test is in permission evaluation bellow,
+        // use two capabilities that teacher has and one does not, none of them should be allowed for not-logged-in user.
+        $this->assertTrue($DB->record_exists('capabilities', array('name' => 'moodle/backup:backupsection')));
+        $this->assertTrue($DB->record_exists('capabilities', array('name' => 'moodle/backup:backupcourse')));
+
+        $sca = array('moodle/backup:backupsection', 'moodle/backup:backupcourse');
+
+        $this->setUser($teacher);
+        require_all_capabilities($sca, $coursecontext);
+        require_all_capabilities($sca, $coursecontext, $teacher);
+
+        // Guest users should not have any of these perms.
+        $this->setUser(0);
+        $this->expectException(\required_capability_exception::class);
+        require_all_capabilities($sca, $coursecontext);
     }
 }
 
