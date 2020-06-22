@@ -5208,6 +5208,9 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
         echo $OUTPUT->notification($strdeleted.get_string('type_block_plural', 'plugin'), 'notifysuccess');
     }
 
+    $DB->set_field('course_modules', 'deletioninprogress', '1', ['course' => $courseid]);
+    rebuild_course_cache($courseid, true);
+
     // Get the list of all modules that are properly installed.
     $allmodules = $DB->get_records_menu('modules', array(), '', 'name, id');
 
@@ -5250,6 +5253,7 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
                         // Delete cm and its context - orphaned contexts are purged in cron in case of any race condition.
                         context_helper::delete_instance(CONTEXT_MODULE, $cm->id);
                         $DB->delete_records('course_modules', array('id' => $cm->id));
+                        rebuild_course_cache($cm->course, true);
                     }
                 }
             }
@@ -5286,6 +5290,7 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
         }
         context_helper::delete_instance(CONTEXT_MODULE, $cm->id);
         $DB->delete_records('course_modules', array('id' => $cm->id));
+        rebuild_course_cache($cm->course, true);
     }
 
     if ($showfeedback) {
@@ -5970,7 +5975,8 @@ function generate_email_messageid($localpart = null) {
  * @param string $subject plain text subject line of the email
  * @param string $messagetext plain text version of the message
  * @param string $messagehtml complete html version of the message (optional)
- * @param string $attachment a file on the filesystem, either relative to $CFG->dataroot or a full path to a file in $CFG->tempdir
+ * @param string $attachment a file on the filesystem, either relative to $CFG->dataroot or a full path to a file in one of
+ *          the following directories: $CFG->cachedir, $CFG->dataroot, $CFG->dirroot, $CFG->localcachedir, $CFG->tempdir
  * @param string $attachname the name of the file (extension indicates MIME)
  * @param bool $usetrueaddress determines whether $from email address should
  *          be sent out. Will be overruled by user profile setting for maildisplay
@@ -6239,12 +6245,31 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml = '', 
 
             // Before doing the comparison, make sure that the paths are correct (Windows uses slashes in the other direction).
             $attachpath = str_replace('\\', '/', $attachmentpath);
-            // Make sure both variables are normalised before comparing.
-            $temppath = str_replace('\\', '/', realpath($CFG->tempdir));
 
-            // If the attachment is a full path to a file in the tempdir, use it as is,
+            // Add allowed paths to an array (also check if it's not empty).
+            $allowedpaths = array_filter([
+                $CFG->cachedir,
+                $CFG->dataroot,
+                $CFG->dirroot,
+                $CFG->localcachedir,
+                $CFG->tempdir
+            ]);
+            // Set addpath to true.
+            $addpath = true;
+            // Check if attachment includes one of the allowed paths.
+            foreach ($allowedpaths as $tmpvar) {
+                // Make sure both variables are normalised before comparing.
+                $temppath = str_replace('\\', '/', realpath($tmpvar));
+                // Set addpath to false if the attachment includes one of the allowed paths.
+                if (strpos($attachpath, $temppath) === 0) {
+                    $addpath = false;
+                    break;
+                }
+            }
+
+            // If the attachment is a full path to a file in the multiple allowed paths, use it as is,
             // otherwise assume it is a relative path from the dataroot (for backwards compatibility reasons).
-            if (strpos($attachpath, $temppath) !== 0) {
+            if ($addpath == true) {
                 $attachmentpath = $CFG->dataroot . '/' . $attachmentpath;
             }
 
