@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unit tests for the shortanswer question type class.
+ * Unit tests for the dictation1 question type class.
  *
- * @package    qtype_shortanswer
+ * @package    qtype_dictation1
  * @copyright  2013 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,27 +26,27 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/question/type/shortanswer/questiontype.php');
+require_once($CFG->dirroot . '/question/type/dictation1/questiontype.php');
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
 require_once($CFG->dirroot . '/question/type/edit_question_form.php');
-require_once($CFG->dirroot . '/question/type/shortanswer/edit_dictation1_form.php');
+require_once($CFG->dirroot . '/question/type/dictation1/edit_dictation1_form.php');
 
 /**
- * Unit tests for the shortanswer question type class.
+ * Unit tests for the dictation1 question type class.
  *
  * @copyright  2007 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_shortanswer_test extends advanced_testcase {
+class qtype_dictation1_test extends advanced_testcase {
     public static $includecoverage = array(
         'question/type/questiontypebase.php',
-        'question/type/shortanswer/questiontype.php',
+        'question/type/dictation1/questiontype.php',
     );
 
     protected $qtype;
 
     protected function setUp() {
-        $this->qtype = new qtype_shortanswer();
+        $this->qtype = new qtype_dictation1();
     }
 
     protected function tearDown() {
@@ -54,11 +54,11 @@ class qtype_shortanswer_test extends advanced_testcase {
     }
 
     protected function get_test_question_data() {
-        return test_question_maker::get_question_data('shortanswer');
+        return test_question_maker::get_question_data('dictation1');
     }
 
     public function test_name() {
-        $this->assertEquals($this->qtype->name(), 'shortanswer');
+        $this->assertEquals($this->qtype->name(), 'dictation1');
     }
 
     public function test_can_analyse_responses() {
@@ -66,13 +66,13 @@ class qtype_shortanswer_test extends advanced_testcase {
     }
 
     public function test_get_random_guess_score() {
-        $q = test_question_maker::get_question_data('shortanswer');
+        $q = test_question_maker::get_question_data('dictation1');
         $q->options->answers[15]->fraction = 0.1;
         $this->assertEquals(0.1, $this->qtype->get_random_guess_score($q));
     }
 
     public function test_get_possible_responses() {
-        $q = test_question_maker::get_question_data('shortanswer');
+        $q = test_question_maker::get_question_data('dictation1');
 
         $this->assertEquals(array(
             $q->id => array(
@@ -85,7 +85,7 @@ class qtype_shortanswer_test extends advanced_testcase {
     }
 
     public function test_get_possible_responses_no_star() {
-        $q = test_question_maker::get_question_data('shortanswer', 'frogonly');
+        $q = test_question_maker::get_question_data('dictation1', 'frogonly');
 
         $this->assertEquals(array(
             $q->id => array(
@@ -100,16 +100,16 @@ class qtype_shortanswer_test extends advanced_testcase {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
-        $questiondata = test_question_maker::get_question_data('shortanswer');
-        $formdata = test_question_maker::get_question_form_data('shortanswer');
+        $questiondata = test_question_maker::get_question_data('dictation1');
+        $formdata = test_question_maker::get_question_form_data('dictation1');
 
         $generator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $cat = $generator->create_question_category(array());
 
         $formdata->category = "{$cat->id},{$cat->contextid}";
-        qtype_shortanswer_edit_form::mock_submit((array)$formdata);
+        qtype_dictation1_edit_form::mock_submit((array)$formdata);
 
-        $form = qtype_shortanswer_test_helper::get_question_editing_form($cat, $questiondata);
+        $form = qtype_dictation1_test_helper::get_question_editing_form($cat, $questiondata);
 
         $this->assertTrue($form->is_validated());
 
@@ -146,17 +146,17 @@ class qtype_shortanswer_test extends advanced_testcase {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
-        $questiondata = test_question_maker::get_question_data('shortanswer');
-        $formdata = test_question_maker::get_question_form_data('shortanswer');
+        $questiondata = test_question_maker::get_question_data('dictation1');
+        $formdata = test_question_maker::get_question_form_data('dictation1');
 
         $generator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $cat = $generator->create_question_category(array());
 
         $formdata->category = "{$cat->id},{$cat->contextid}";
         $formdata->answer[0] = '   frog   ';
-        qtype_shortanswer_edit_form::mock_submit((array)$formdata);
+        qtype_dictation1_edit_form::mock_submit((array)$formdata);
 
-        $form = qtype_shortanswer_test_helper::get_question_editing_form($cat, $questiondata);
+        $form = qtype_dictation1_test_helper::get_question_editing_form($cat, $questiondata);
 
         $this->assertTrue($form->is_validated());
 
