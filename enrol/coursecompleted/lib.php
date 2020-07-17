@@ -57,18 +57,13 @@ class enrol_coursecompleted_plugin extends enrol_plugin {
      * @return array of pix_icon
      */
     public function get_info_icons(array $instances) {
-        global $DB, $USER;
+        global $DB;
         $arr = [];
-        if (!isguestuser()) {
-            foreach ($instances as $instance) {
-                if ($fullname = $DB->get_field('course', 'fullname', ['id' => $instance->customint1])) {
-                    $context = context_course::instance($instance->customint1);
-                    if (is_enrolled($context, $USER->id, 'moodle/course:isincompletionreports', true)) {
-                        $name = format_string($fullname, true, ['context' => $context]);
-                        $name = get_string('aftercourse', 'enrol_coursecompleted', $name);
-                        $arr[] = new pix_icon('icon', $name, 'enrol_coursecompleted');
-                    }
-                }
+        foreach ($instances as $instance) {
+            if ($fullname = $DB->get_field('course', 'fullname', ['id' => $instance->customint1])) {
+                $context = context_course::instance($instance->customint1);
+                $name = format_string($fullname, true, ['context' => $context]);
+                $arr[] = new pix_icon('icon', get_string('aftercourse', 'enrol_coursecompleted', $name), 'enrol_coursecompleted');
             }
         }
         return $arr;
@@ -92,15 +87,33 @@ class enrol_coursecompleted_plugin extends enrol_plugin {
      */
     public function enrol_page_hook(stdClass $instance) {
         global $DB, $OUTPUT;
-        if (!isguestuser()) {
-            if ($fullname = $DB->get_field('course', 'fullname', ['id' => $instance->customint1])) {
-                $context = context_course::instance($instance->customint1);
-                $name = format_string($fullname, true, ['context' => $context]);
-                $link = html_writer::link(new moodle_url('/course/view.php', ['id' => $instance->customint1]), $name);
-                return $OUTPUT->box(get_string('willbeenrolled', 'enrol_coursecompleted', $link));
+        $str = '';
+        if ($this->get_config('svglearnpath')) {
+            $items = $this->build_course_path($instance);
+            $arr = [];
+            $i = 1;
+            foreach ($items as $item) {
+                $str = '<span class="fa-stack fa-2x">';
+                if ($item == $instance->courseid) {
+                    $str .= '<i class="fa fa-circle fa-stack-2x text-dark"></i>';
+                    $str .= '<strong class="fa-stack-1x text-light">' . $i . '</strong></span>';
+                } else {
+                    $str .= '<i class="fa fa-circle-o fa-stack-2x"></i>';
+                    $str .= '<strong class="fa-stack-1x">' . $i . '</strong></span>';
+                    $str = $this->build_courselink($item, $str);
+                }
+                $arr[] = $str;
+                $i++;
             }
+            $str = implode('<span class="fa-stack fa-2x"><i class="fa fa-arrow-right fa-stack-1x"></i></span>', $arr);
         }
-        return '';
+        if ($fullname = $DB->get_field('course', 'fullname', ['id' => $instance->customint1])) {
+            $context = context_course::instance($instance->customint1);
+            $name = format_string($fullname, true, ['context' => $context]);
+            $link = html_writer::link(new moodle_url('/course/view.php', ['id' => $instance->customint1]), $name);
+            $str = $OUTPUT->box(get_string('willbeenrolled', 'enrol_coursecompleted', $link . '<br/>' . $str));
+        }
+        return $str;
     }
 
     /**
@@ -184,8 +197,8 @@ class enrol_coursecompleted_plugin extends enrol_plugin {
     public function restore_user_enrolment(restore_enrolments_structure_step $step, $data, $instance, $userid, $oldinstancestatus) {
         if ($step->get_task()->get_target() == backup::TARGET_NEW_COURSE) {
             $this->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
-            mark_user_dirty($userid);
         }
+        mark_user_dirty($userid);
     }
 
     /**
@@ -302,6 +315,15 @@ class enrol_coursecompleted_plugin extends enrol_plugin {
         $mform->addElement('course', 'customint1', get_string('course'), ['multiple' => false, 'includefrontpage' => false]);
         $mform->addRule('customint1', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('customint1', 'compcourse', 'enrol_coursecompleted');
+
+        $mform->addElement('advcheckbox', 'customint2', get_string('welcome', 'enrol_coursecompleted'));
+        $mform->addHelpButton('customint2', 'welcome', 'enrol_coursecompleted');
+
+        $mform->addElement('textarea', 'customtext1',
+            get_string('customwelcome', 'enrol_coursecompleted'), ['cols' => '60', 'rows' => '8']);
+        $mform->addHelpButton('customtext1', 'customwelcome', 'enrol_coursecompleted');
+        $mform->disabledIf('customtext1', 'customint2', 'notchecked');
+
     }
 
     /**
@@ -328,5 +350,74 @@ class enrol_coursecompleted_plugin extends enrol_plugin {
             }
         }
         return $errors;
+    }
+
+    /**
+     * Build (possible) coursepath
+     *
+     * @param stdClass $instance
+     * @return array $items
+     */
+    public function build_course_path(stdClass $instance) {
+        $parents = $this->search_parents($instance->customint1);
+        $children = $this->search_children($instance->courseid);
+        return array_unique(array_merge($parents, $children));
+    }
+
+    /**
+     * Search parents
+     *
+     * @param int $id
+     * @param int $level
+     * @return array items
+     */
+    private function search_parents($id, $level = 1) {
+        global $DB;
+        $arr = [$id];
+        if ($level < 5) {
+            $level++;
+            $params = ['enrol' => 'coursecompleted', 'courseid' => $id];
+            if ($parent = $DB->get_field('enrol', 'customint1', $params, IGNORE_MULTIPLE)) {
+                $arr = array_merge($arr, $this->search_parents($parent, $level));
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * Search children
+     *
+     * @param int $id
+     * @param int $level
+     * @return array items
+     */
+    private function search_children($id, $level = 1) {
+        global $DB;
+        $arr = [$id];
+        if ($level < 5) {
+            $level++;
+            $params = ['enrol' => 'coursecompleted', 'customint1' => $id];
+            if ($child = $DB->get_field('enrol', 'courseid', $params, IGNORE_MULTIPLE)) {
+                $arr = array_merge($arr, $this->search_children($child, $level));
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * Build course link
+     *
+     * @param int $id Course id
+     * @param string $svg svg image
+     * @return string course name
+     */
+    private function build_courselink($id, $svg) {
+        global $DB;
+        $str = '';
+        if ($fullname = $DB->get_field('course', 'fullname', ['id' => $id])) {
+            $name = format_string($fullname, true, ['context' => context_course::instance($id)]);
+            $str = html_writer::link(new moodle_url('/course/view.php', ['id' => $id]), $svg, ['title' => $name]);
+        }
+        return $str;
     }
 }

@@ -15,31 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
-<<<<<<< HEAD:blocks/xp/db/events.php
- * Observers.
- *
- * @package    block_xp
- * @copyright  2014 Frédéric Massart
-=======
  * Emoticon filter post install hook.
  *
  * @package    filter_emoticon
  * @copyright  2020 Simey Lameze <simey@moodle.com>
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:filter/emoticon/db/install.php
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-<<<<<<< HEAD:blocks/xp/db/events.php
-$rulemaker = \block_xp\di::get('observer_rules_maker');
-$observers = $rulemaker->get_observer_rules();
-unset($rulemaker);
-=======
 function xmldb_filter_emoticon_install() {
     global $CFG;
     require_once($CFG->libdir . "/filterlib.php");
 
     filter_set_global_state('emoticon', TEXTFILTER_ON, 0);
 }
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:filter/emoticon/db/install.php

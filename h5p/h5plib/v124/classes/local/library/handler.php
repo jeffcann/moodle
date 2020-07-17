@@ -15,17 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
-<<<<<<< HEAD:blocks/xp/tests/base_testcase.php
- * Base testcase.
- *
- * @package    block_xp
- * @copyright  2014 Frédéric Massart - FMCorz.net
-=======
  * Handler for the version 1.24 of the H5P library.
  *
  * @package    h5plib_v124
  * @copyright  2019 Sara Arjona <sara@moodle.com>
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:h5p/h5plib/v124/classes/local/library/handler.php
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,23 +29,6 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 /**
-<<<<<<< HEAD:blocks/xp/tests/base_testcase.php
- * Base testcase class.
- *
- * @package    block_xp
- * @copyright  2014 Frédéric Massart - FMCorz.net
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-abstract class block_xp_base_testcase extends advanced_testcase {
-
-    public function setUp() {
-        $this->resetAfterTest();
-        $this->reset_container();
-    }
-
-    protected function reset_container() {
-        \block_xp\di::set_container(new \block_xp\local\default_container());
-=======
  * Handler for the version 1.24 of the H5P library.
  *
  * @package    h5plib_v124
@@ -68,7 +44,6 @@ class handler extends \core_h5p\local\library\handler {
      */
     public static function get_h5p_version(): string {
         return '124';
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:h5p/h5plib/v124/classes/local/library/handler.php
     }
 
 }

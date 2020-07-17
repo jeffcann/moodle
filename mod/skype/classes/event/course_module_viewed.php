@@ -18,7 +18,7 @@
  * The mod_skype course module viewed event.
  *
  * @package    mod_skype
- * @copyright  2014 drachels@drachels.com
+ * @copyright  2014 AL Rachels, drachels@drachels.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

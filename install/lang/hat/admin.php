@@ -17,14 +17,6 @@
 
 
 /**
-<<<<<<< HEAD:mod/skype/version.php
- * Defines the version of skype
- *
- * This code fragment is called by moodle_needs_upgrading() and
- * /admin/index.php
- *
- * @package   mod_skype
- * @copyright 2011 Amr Hourani a.hourani@gmail.com
 =======
  * Automatically generated strings for Moodle installer
  *
@@ -35,20 +27,11 @@
  * list of strings defined in /install/stringnames.txt.
  *
  * @package   installer
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:install/lang/hat/admin.php
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-<<<<<<< HEAD:mod/skype/version.php
-$plugin->component = 'mod_skype'; // Full name of the plugin (used for diagnostics).
-$plugin->version  = 2014090700;  // The current module version (Date: YYYYMMDDXX)
-$plugin->requires = 2010112400;  // Requires this Moodle version
-$plugin->cron     = 0;           // Period for cron to check this module (secs)
-$plugin->release = 'v2.7 (Build: 20140090700)';
-=======
 $string['clianswerno'] = 'n';
 $string['cliansweryes'] = 'w';
 $string['cliyesnoprompt'] = 'Tape w (pou wi) oswa n (pou non)';
->>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:install/lang/hat/admin.php
