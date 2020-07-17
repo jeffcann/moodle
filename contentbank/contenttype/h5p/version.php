@@ -15,15 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD:mod/checklist/db/events.php
+ * Update checklists when events occur
+ *
+ * @package   mod_checklist
+ * @copyright 2015 Davo Smith, Synergy Learning
+=======
  * Version details
  *
  * @package   contenttype_h5p
  * @copyright  2020 Amaia Anabitarte <amaia@moodle.com>
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:contentbank/contenttype/h5p/version.php
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD:mod/checklist/db/events.php
+$observers = array(
+    array(
+        'eventname' => '*',
+        'callback' => '\mod_checklist\local\autoupdate::update_from_event'
+    )
+);
+=======
 $plugin->version   = 2020061500;         // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2020060900;         // Requires this Moodle version
 $plugin->component = 'contenttype_h5p'; // Full name of the plugin (used for diagnostics).
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:contentbank/contenttype/h5p/version.php

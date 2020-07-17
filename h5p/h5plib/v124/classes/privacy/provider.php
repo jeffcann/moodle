@@ -15,6 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD:blocks/participants/classes/privacy/provider.php
+ * Privacy Subsystem implementation for block_participants.
+ *
+ * @package    block_participants
+ * @copyright  2018 Zig Tan <zig@moodle.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+namespace block_participants\privacy;
+=======
  * Privacy provider implementation for the version 1.24 of the H5P library.
  *
  * @package    h5plib_v124
@@ -23,13 +33,20 @@
  */
 
 namespace h5plib_v124\privacy;
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:h5p/h5plib/v124/classes/privacy/provider.php
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
+<<<<<<< HEAD:blocks/participants/classes/privacy/provider.php
+ * Privacy Subsystem for block_participants implementing null_provider.
+ *
+ * @copyright  2018 Zig Tan <zig@moodle.com>
+=======
  * Privacy provider implementation for the version 1.24 of the H5P library.
  *
  * @copyright  2020 Sara Arjona <sara@moodle.com>
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:h5p/h5plib/v124/classes/privacy/provider.php
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {

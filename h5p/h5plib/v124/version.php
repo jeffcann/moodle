@@ -15,6 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD:blocks/checklist/classes/privacy/provider.php
+ * GDPR declaration
+ *
+ * @package   block_checklist
+ * @copyright 2018 Davo Smith
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+namespace block_checklist\privacy;
+
+defined('MOODLE_INTERNAL') || die();
+
+class provider implements \core_privacy\local\metadata\null_provider {
+    public static function get_reason(): string {
+        return 'privacy:null_reason';
+    }
+}
+=======
  * Version information.
  *
  * @package   h5plib_v124
@@ -27,3 +45,4 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2020061500;       // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2020060900;       // Requires this Moodle version
 $plugin->component = 'h5plib_v124';    // Full name of the plugin (used for diagnostics).
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:h5p/h5plib/v124/version.php

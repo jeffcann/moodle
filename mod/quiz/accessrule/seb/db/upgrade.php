@@ -15,16 +15,37 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD:blocks/remuiblck/version.php
+ * Edwiser RemUI.
+ *
+ * @package    block_remuiblck
+ * @copyright  2019 WisdmLabs
+=======
  * Upgrade script for plugin.
  *
  * @package    quizaccess_seb
  * @author     Andrew Madden <andrewmadden@catalyst-au.net>
  * @copyright  2019 Catalyst IT
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:mod/quiz/accessrule/seb/db/upgrade.php
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD:blocks/remuiblck/version.php
+$plugin->version   = 2020021100;
+$plugin->requires  = 2017111300;
+$plugin->maturity  = MATURITY_STABLE; // This version's maturity level.
+$plugin->release   = '1.0.12';
+$plugin->component = 'block_remuiblck';
+
+// ********************* CHECK THIS PLUGIN DEPENDECIES******************************//
+
+// $plugin->dependencies = array(
+// 'theme_remui' => ANY_VERSION,   // The Foo activity must be present (any version).
+// 'enrol_bar' => 2014020300, // The Bar enrolment plugin version 2014020300 or higher must be present.
+// );
+=======
 require_once($CFG->dirroot  . '/mod/quiz/accessrule/seb/lib.php');
 
 /**
@@ -42,3 +63,4 @@ function xmldb_quizaccess_seb_upgrade($oldversion) {
 
     return true;
 }
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:mod/quiz/accessrule/seb/db/upgrade.php

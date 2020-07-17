@@ -14,6 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
+<<<<<<< HEAD:blocks/remuiblck/templates/enrolledusers.mustache
+{{#data}}
+  {{> block_remuiblck/enrolled_users_stats }}
+{{/data}}
+
+{{#js}}
+require(['block_remuiblck/userstats'], function(){});
+{{/js}}
+=======
 {{!
     @template tool_moodlenet/chooser_footer_close_mnet
 
@@ -26,3 +35,4 @@
 <button data-action="close-chooser-option-summary" class="closeoptionsummary btn btn-secondary mr-auto" tabindex="0">
     {{#str}} back {{/str}}
 </button>
+>>>>>>> 3e78b603a558ddd8216f0612a767cc75a8c8dd13:admin/tool/moodlenet/templates/chooser_footer_close_mnet.mustache
