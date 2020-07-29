@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="question/type/musicaldictation/db" VERSION="20130118" COMMENT="XMLDB file for Moodle question/type/musicaldictation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="qtype_musicaldict_options" COMMENT="Options for Musical Dictation questions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="audio_file_url" TYPE="text" NOTNULL="true" SEQUENCE="false" />
+        <FIELD NAME="voice_count" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="1" SEQUENCE="false" />
+        <FIELD NAME="max_play_count" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="4" SEQUENCE="false"/>
+        <FIELD NAME="initial_score" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="canvas_height" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="200" SEQUENCE="false"/>
+        <FIELD NAME="canvas_width" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="800" SEQUENCE="false" />
+        <FIELD NAME="can_change_key" TYPE="char" LENGTH="3" NOTNULL="true" DEFAULT="Yes" SEQUENCE="false" />
+        <FIELD NAME="can_change_time" TYPE="char" LENGTH="3" NOTNULL="true" DEFAULT="Yes" SEQUENCE="false" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="questionid" TYPE="foreign-unique" FIELDS="questionid" REFTABLE="question" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
