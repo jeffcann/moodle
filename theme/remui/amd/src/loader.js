@@ -408,7 +408,7 @@ define([
     // close drawer and sidebar automatically on smaller window size
     function resetSidebar() {
         var width = $(window).width();
-        if (width < 992) {
+        if (width < 1366) {
             if ($('body').hasClass('drawer-open-left')) {
                 $('button[data-action="toggle-drawer"]').trigger('click');
             }
