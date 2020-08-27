@@ -34,14 +34,15 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_musicaldictation_renderer extends qtype_renderer {
-    public function formulation_and_controls(question_attempt $qa,
-            question_display_options $options) {
+    public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
+
         global $DB;
 
         $question = $qa->get_question();
         $currentanswer = $qa->get_last_qt_var('answer');
 
-        $this->page->requires->js('/question/type/musicaldictation/amd/app.901e3306.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/setup.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/app.04035336.js');
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
@@ -85,8 +86,12 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
 
         // generate the URL for the audio file
         $fileRecord = $DB->get_record_select("files", "itemid = {$question->audio_file_url} and filesize > 0");
-        $audiourl = file_rewrite_pluginfile_urls("@@PLUGINFILE@@{$fileRecord->filepath}/{$fileRecord->filename}", $fileRecord->filearea == 'draft' ? 'draftfile.php' : 'pluginfile.php',
-            $fileRecord->contextid, $fileRecord->component, $fileRecord->filearea, $question->audio_file_url);
+        $audiourl = file_rewrite_pluginfile_urls("@@PLUGINFILE@@{$fileRecord->filepath}/{$fileRecord->filename}",
+            $fileRecord->filearea == 'draft' ? 'draftfile.php' : 'pluginfile.php',
+            $fileRecord->contextid,
+            $fileRecord->component,
+            $fileRecord->filearea,
+            $question->audio_file_url);
 
         var_dump($currentanswer);
 
