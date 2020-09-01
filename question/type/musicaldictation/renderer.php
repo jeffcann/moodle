@@ -42,7 +42,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
         $currentanswer = $qa->get_last_qt_var('answer');
 
         $this->page->requires->js('/question/type/musicaldictation/amd/setup.js');
-        $this->page->requires->js('/question/type/musicaldictation/amd/app.04035336.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/app.3995aa01.js');
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
@@ -135,8 +135,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             return '';
         }
 
-        return $question->format_text($answer->feedback, $answer->feedbackformat,
-                $qa, 'question', 'answerfeedback', $answer->id);
+        return $question->format_text($answer->feedback, $answer->feedbackformat, $qa, 'question', 'answerfeedback', $answer->id);
     }
 
     public function correct_response(question_attempt $qa) {
@@ -147,7 +146,6 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             return '';
         }
 
-        return get_string('correctansweris', 'qtype_musicaldictation',
-                s($question->clean_response($answer->answer)));
+        return get_string('correctansweris', 'qtype_musicaldictation', s($answer->answer));
     }
 }
