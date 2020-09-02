@@ -92,9 +92,11 @@ class qtype_musicaldictation_question
 
         // fail on the first error
         foreach ($answer->staves as $staveidx => $stave) {
+            $responsestave = $response->staves[$staveidx];
             foreach($stave->voices as $voiceidx => $voice) {
+                $responsevoice = $responsestave->voices[$voiceidx];
                 foreach($voice->notes as $noteidx => $note) {
-                    $responsenote = $response->staves[$staveidx]->voices[$voiceidx]->notes[$noteidx];
+                    $responsenote = $responsevoice->notes[$noteidx];
 
                     // check note length (rhythm)
                     if($responsenote->duration !== $note->duration) {
@@ -110,10 +112,20 @@ class qtype_musicaldictation_question
                         break;
                     }
                 }
+
+                if(count($voice->ties) !== count($responsevoice->ties)) {
+                    array_push($errors, "The number of ties is incorrect");
+                } else {
+                    foreach ($voice->ties as $tieidx => $tie) {
+                        $responsetie = $responsevoice->ties[$tieidx];
+                        if ($tie->startNoteIdx !== $responsetie->startNoteIdx || $tie->endNoteIdx !== $responsetie->endNoteIdx) {
+                            array_push($errors, "There is a mistake with the location of one or more ties");
+                        }
+                    }
+                }
             }
         }
 
-        // @todo check the ties are correct
 
         return $errors;
     }
