@@ -42,11 +42,11 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
         $currentanswer = $qa->get_last_qt_var('answer');
 
         $this->page->requires->js('/question/type/musicaldictation/amd/setup.js');
-        $this->page->requires->js('/question/type/musicaldictation/amd/app.04035336.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/app.bebec2f4.js');
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
-            'type' => 'text',
+            'type' => 'hidden',
             'name' => $inputname,
             'value' => $currentanswer,
             'id' => $inputname,
@@ -109,6 +109,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             'data-can-change-key' =>  $question->can_change_key,
             'data-can-change-time' => $question->can_change_time,
             'data-max-play-count' =>  $question->max_play_count,
+            'data-readonly' => ($options->readonly ? "readonly" : "")
         );
 
         $result = html_writer::tag('div', null, $appattrs);
@@ -116,7 +117,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
 
         if (!$placeholder) {
             $result .= html_writer::start_tag('div', array('class' => 'ablock form-inline'));
-            $result .= html_writer::tag('label', get_string('answer', 'qtype_musicaldictation', html_writer::tag('span', $input, array('class' => 'answer'))), array('for' => $inputattributes['id']));
+            $result .= html_writer::tag('span', $input, array('class' => 'answer'));
             $result .= html_writer::end_tag('div');
         }
 
@@ -135,8 +136,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             return '';
         }
 
-        return $question->format_text($answer->feedback, $answer->feedbackformat,
-                $qa, 'question', 'answerfeedback', $answer->id);
+        return $question->format_text($answer->feedback, $answer->feedbackformat, $qa, 'question', 'answerfeedback', $answer->id);
     }
 
     public function correct_response(question_attempt $qa) {
@@ -147,7 +147,6 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             return '';
         }
 
-        return get_string('correctansweris', 'qtype_musicaldictation',
-                s($question->clean_response($answer->answer)));
+        return get_string('correctansweris', 'qtype_musicaldictation', s($answer->answer));
     }
 }
