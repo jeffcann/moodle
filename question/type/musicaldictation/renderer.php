@@ -42,7 +42,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
         $currentanswer = $qa->get_last_qt_var('answer');
 
         $this->page->requires->js('/question/type/musicaldictation/amd/setup.js');
-        $this->page->requires->js('/question/type/musicaldictation/amd/app.d79e4eb7.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/app.bebec2f4.js');
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
