@@ -112,8 +112,8 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             'data-readonly' => ($options->readonly ? "readonly" : "")
         );
 
-        $result = html_writer::tag('div', null, $appattrs);
-        $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+        $result = html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+        $result .= html_writer::tag('div', null, $appattrs);
 
         if (!$placeholder) {
             $result .= html_writer::start_tag('div', array('class' => 'ablock form-inline'));
