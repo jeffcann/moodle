@@ -1285,7 +1285,9 @@ class global_navigation extends navigation_node {
             if (isloggedin() && !isguestuser()) {  // Makes no sense if you aren't logged in
                 $this->rootnodes['home'] = $this->add(get_string('myhome'), new moodle_url('/my/'),
                     self::TYPE_SETTING, null, 'myhome', new pix_icon('i/dashboard', ''));
-                $this->rootnodes['home']->showinflatnavigation = true;
+
+                // MATT-47: hide certain menu items to reduce clutter
+                $this->rootnodes['home']->showinflatnavigation = false;
             }
         } else {
             // The home element should be the site because the root node is my moodle
@@ -2807,13 +2809,14 @@ class global_navigation extends navigation_node {
         }
 
         // Check access to the course and competencies page.
-        if ($navoptions->competencies) {
-            // Just a link to course competency.
-            $title = get_string('competencies', 'core_competency');
-            $path = new moodle_url("/admin/tool/lp/coursecompetencies.php", array('courseid' => $course->id));
-            $coursenode->add($title, $path, navigation_node::TYPE_SETTING, null, 'competencies',
-                    new pix_icon('i/competencies', ''));
-        }
+        // MATT-47: hide certain menu items to reduce clutter
+//        if ($navoptions->competencies) {
+//            // Just a link to course competency.
+//            $title = get_string('competencies', 'core_competency');
+//            $path = new moodle_url("/admin/tool/lp/coursecompetencies.php", array('courseid' => $course->id));
+//            $coursenode->add($title, $path, navigation_node::TYPE_SETTING, null, 'competencies',
+//                    new pix_icon('i/competencies', ''));
+//        }
         if ($navoptions->grades) {
             $url = new moodle_url('/grade/report/index.php', array('id'=>$course->id));
             $gradenode = $coursenode->add(get_string('grades'), $url, self::TYPE_SETTING, null,
@@ -2889,19 +2892,20 @@ class global_navigation extends navigation_node {
                     self::TYPE_SETTING, null, 'search');
         }
 
-        if ($navoptions->calendar) {
-            $courseid = $COURSE->id;
-            $params = array('view' => 'month');
-            if ($courseid != $SITE->id) {
-                $params['course'] = $courseid;
-            }
-
-            // Calendar
-            $calendarurl = new moodle_url('/calendar/view.php', $params);
-            $node = $coursenode->add(get_string('calendar', 'calendar'), $calendarurl,
-                self::TYPE_CUSTOM, null, 'calendar', new pix_icon('i/calendar', ''));
-            $node->showinflatnavigation = true;
-        }
+        // MATT-47: hide certain menu items to reduce clutter
+//        if ($navoptions->calendar) {
+//            $courseid = $COURSE->id;
+//            $params = array('view' => 'month');
+//            if ($courseid != $SITE->id) {
+//                $params['course'] = $courseid;
+//            }
+//
+//            // Calendar
+//            $calendarurl = new moodle_url('/calendar/view.php', $params);
+//            $node = $coursenode->add(get_string('calendar', 'calendar'), $calendarurl,
+//                self::TYPE_CUSTOM, null, 'calendar', new pix_icon('i/calendar', ''));
+//            $node->showinflatnavigation = true;
+//        }
 
         if (isloggedin()) {
             $usercontext = context_user::instance($USER->id);
