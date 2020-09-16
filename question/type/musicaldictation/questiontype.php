@@ -79,7 +79,19 @@ class qtype_musicaldictation extends question_type {
             return $result;
         }
 
+        $fileRecord = $DB->get_record_select("files", "itemid = {$question->audio_file_url} and filesize > 0");
+        $new_itemid = $question->id ? $question->id : random_int(1000000000,9999999999);
+        file_save_draft_area_files(
+            $question->audio_file_url,
+            $fileRecord->contextid,
+            'qtype_musicaldictation',
+            'audio_file',
+            $new_itemid);
+
+        $question->audio_file_url = $new_itemid;
+
         parent::save_question_options($question);
+
         $this->save_question_answers($question);
         $this->save_hints($question);
     }
@@ -93,6 +105,11 @@ class qtype_musicaldictation extends question_type {
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
         $this->initialise_question_answers($question, $questiondata);
+    }
+
+    public function save_question($question, $form)
+    {
+        return parent::save_question($question, $form);
     }
 
     public function get_random_guess_score($questiondata) {

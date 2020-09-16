@@ -85,15 +85,10 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
         }
 
         // generate the URL for the audio file
-        $fileRecord = $DB->get_record_select("files", "itemid = {$question->audio_file_url} and filesize > 0");
-        $audiourl = file_rewrite_pluginfile_urls("@@PLUGINFILE@@{$fileRecord->filepath}/{$fileRecord->filename}",
-            $fileRecord->filearea == 'draft' ? 'draftfile.php' : 'pluginfile.php',
-            $fileRecord->contextid,
-            $fileRecord->component,
-            $fileRecord->filearea,
-            $question->audio_file_url);
-
-        var_dump($currentanswer);
+        $itemid = $question->audio_file_url;
+        $file_record = $DB->get_record_select("files", "itemid = {$itemid} and filesize > 0 and component = 'qtype_musicaldictation' and filearea = 'audio_file'");
+        $contextid = $file_record->contextid;
+        $audiourl = moodle_url::make_pluginfile_url($contextid, 'qtype_musicaldictation', "audio_file", $itemid, $file_record->filepath, $file_record->filename)->out();
 
         // these are all the data attributes passed to the Vue app
         $appattrs = array(

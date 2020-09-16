@@ -33,12 +33,7 @@ class qtype_musicaldictation_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
 
-        $filemanageroptions = array();
-        $filemanageroptions['accepted_types'] = array('audio');
-        $filemanageroptions['maxfiles'] = 1;
-        $filemanageroptions['subdirs'] = 0;
-        $mform->addElement('filemanager', 'audio_file_url', "Audio file", null, $filemanageroptions);
-
+        $mform->addElement('filepicker', 'audio_file_url', "Audio file", null, array('maxbytes' => 100000000, 'accepted_types' => array("MP3", "M4A")));
         $mform->addElement('textarea', 'initial_score', 'Initial score setup', '{}');
         $mform->addElement('select',   'canvas_height', 'Canvas height', array(200, 300, 450, 550));
         $mform->addElement('select',   'canvas_width', 'Canvas width', array(600, 800, 1000, 1200));
@@ -46,15 +41,11 @@ class qtype_musicaldictation_edit_form extends question_edit_form {
         $mform->addElement('select',   'can_change_key', 'Can change key', array('No', 'Yes'));
         $mform->addElement('select',   'can_change_time', 'Can change timing', array('No', 'Yes'));
         $mform->addElement('select',   'max_play_count', 'Maximum number of plays', array("Unlimited", 1, 2, 3, 4, 5, 6, 7, 8));
-
-        $mform->addElement('static', 'answersinstruct',
-                get_string('correctanswers', 'qtype_musicaldictation'),
-                get_string('filloutoneanswer', 'qtype_musicaldictation'));
+        $mform->addElement('static',   'answersinstruct', get_string('correctanswers', 'qtype_musicaldictation'), get_string('filloutoneanswer', 'qtype_musicaldictation'));
 
         $mform->closeHeaderBefore('answersinstruct');
 
-        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_musicaldictation', '{no}'),
-                question_bank::fraction_options());
+        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_musicaldictation', '{no}'), question_bank::fraction_options());
 
         $this->add_interactive_settings();
     }
@@ -84,8 +75,7 @@ class qtype_musicaldictation_edit_form extends question_edit_form {
                 if ($data['fraction'][$key] == 1) {
                     $maxgrade = true;
                 }
-            } else if ($data['fraction'][$key] != 0 ||
-                    !html_is_blank($data['feedback'][$key]['text'])) {
+            } else if ($data['fraction'][$key] != 0 || !html_is_blank($data['feedback'][$key]['text'])) {
                 $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_musicaldictation');
                 $answercount++;
             }
