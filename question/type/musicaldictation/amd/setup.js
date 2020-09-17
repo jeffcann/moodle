@@ -25,3 +25,4 @@ function resizeForDictation() {
 }
 
 window.addEventListener("load", resizeForDictation, false);
+

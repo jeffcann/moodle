@@ -42,7 +42,7 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
         $currentanswer = $qa->get_last_qt_var('answer');
 
         $this->page->requires->js('/question/type/musicaldictation/amd/setup.js');
-        $this->page->requires->js('/question/type/musicaldictation/amd/app.43d9099c.js');
+        $this->page->requires->js('/question/type/musicaldictation/amd/app.9fecb1d9.js');
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
@@ -92,10 +92,10 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
 
         // these are all the data attributes passed to the Vue app
         $appattrs = array(
-            'id' => 'app',
+            'id' => "dictation-app-{$question->id}",
+            'class' => "dictation-app",
             'data-answer-element-id' => $inputname,
             'data-context-id' =>  $this->context->id,
-            'data-audio-file-url-raw' =>  $audiourl,
             'data-audio-file-url' =>  base64_encode($audiourl),
             'data-initial-score' =>   base64_encode($currentanswer ? $currentanswer : $question->initial_score),
             'data-canvas-height' =>   array(200, 300, 450, 550)[$question->canvas_height],
