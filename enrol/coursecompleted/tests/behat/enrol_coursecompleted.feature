@@ -23,8 +23,6 @@ Feature: Enrolment on course completion
       | name | description | course | idnumber |
       | Group 1 | Group description | C1 | GROUP1 |
       | Group 1 | Group description | C2 | GROUP2 |
-      | Group 1 | Group description | C3 | GROUP2 |
-      | Group 1 | Group description | C4 | GROUP2 |
     And the following "group members" exist:
       | user  | group |
       | user1 | GROUP1|
@@ -79,7 +77,6 @@ Feature: Enrolment on course completion
        | id_enrolperiod_number | 3 days|
        | id_enrolstartdate_enabled | 1 |
        | id_enrolstartdate_year | 2030 |
-
     And I press "Add method"
     And I am on "Course 2" course homepage
     And I log out
@@ -149,7 +146,6 @@ Feature: Enrolment on course completion
     When I am on the "C2" "Course" page logged in as "teacher1"
     And I navigate to course participants
     Then I should see "Username 1" in the "participants" "table"
-    And I should see "Group 1" in the "participants" "table"
     And I log out
     When I am on the "C2" "Course" page logged in as "admin"
     And I navigate to course participants
@@ -167,6 +163,7 @@ Feature: Enrolment on course completion
     And I am on "Course 2" course homepage
     And I navigate to course participants
     Then I should see "Username 1" in the "participants" "table"
+    And I should see "Group 1" in the "participants" "table"
     And I click on "[title='Course completion']" "css_element"
     Then I should see "Course 1"
     And I should see "Aggregation method"

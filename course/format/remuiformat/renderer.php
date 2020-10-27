@@ -13,12 +13,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Cards Format - A topics based format that uses card layout to diaply the content.
  *
- * @package course/format
- * @subpackage remuiformat
+ * @package format_remuiformat
  * @copyright  2019 Wisdmlabs
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,12 +25,35 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/course/format/renderer.php');
 require_once($CFG->dirroot.'/course/format/remuiformat/classes/mod_stats.php');
 
+/**
+ * Remui format renderer class
+ */
 class format_remuiformat_renderer extends format_section_renderer_base {
 
-    protected $courseformat; // Our course format object as defined in lib.php.
-    protected $coursemodulerenderer; // Our custom course module renderer.
-    protected $settingcontroller;  // Our setting controller.
-    protected $modstats;           // Our mod stats controller.
+    /**
+     * Our course format object as defined in lib.php.
+     * @var format_remuiformat
+     */
+    protected $courseformat;
+    /**
+     * Our custom course module renderer.
+     * @var course_renderer
+     */
+    protected $coursemodulerenderer;
+    /**
+     * Our setting controller.
+     * @var object
+     */
+    protected $settingcontroller;
+    /**
+     * Our mod stats controller.
+     * @var \format_remuiformat\ModStats
+     */
+    protected $modstats;
+    /**
+     * Course format settings.
+     * @var array
+     */
     protected $settings;
 
     /**
@@ -323,9 +344,8 @@ class format_remuiformat_renderer extends format_section_renderer_base {
      * @return array of edit control items
      */
     protected function section_edit_control_items($course, $section, $onsectionpage = false) {
-        global $PAGE;
 
-        if (!$PAGE->user_is_editing()) {
+        if (!$this->page->user_is_editing()) {
             return array();
         }
         $coursecontext = context_course::instance($course->id);
@@ -446,7 +466,6 @@ class format_remuiformat_renderer extends format_section_renderer_base {
             // Current course format has 'numsections' option, which is very confusing and we suggest course format
             // developers to get rid of it (see MDL-57769 on how to do it).
             // Display "Increase section" / "Decrease section" links.
-
             echo html_writer::start_tag('div', array('id' => 'changenumsections', 'class' => 'mdl-right'));
 
             // Increase number of sections.
@@ -476,7 +495,6 @@ class format_remuiformat_renderer extends format_section_renderer_base {
             // Display the "Add section" link that will insert a section in the end.
             // Note to course format developers: inserting sections in the other positions should check both
             // capabilities 'moodle/course:update' and 'moodle/course:movesections'.
-
             echo html_writer::start_tag('div', array('id' => 'changenumsections', 'class' => 'mdl-right'));
             if (get_string_manager()->string_exists('addsections', 'format_'.$course->format)) {
                 $straddsections = get_string('addsections', 'format_'.$course->format);
@@ -522,7 +540,6 @@ class format_remuiformat_renderer extends format_section_renderer_base {
             // Current course format has 'numsections' option, which is very confusing and we suggest course format.
             // developers to get rid of it (see MDL-57769 on how to do it).
             // Display "Increase section" / "Decrease section" links.
-
             $straddsection = get_string('increasesections', 'moodle');
 
             // Increase number of sections.
@@ -559,7 +576,6 @@ class format_remuiformat_renderer extends format_section_renderer_base {
             // Display the "Add section" link that will insert a section in the end.
             // Note to course format developers: inserting sections in the other positions should check both
             // capabilities 'moodle/course:update' and 'moodle/course:movesections'.
-
             $addnewsection->numsections = 0;
 
             if (get_string_manager()->string_exists('addsections', 'format_'.$course->format)) {
@@ -606,8 +622,7 @@ class format_remuiformat_renderer extends format_section_renderer_base {
 
     /**
      * Renders the mutiple section page.
-     * @param  \format_cards\output\format_cards_section $section Object of the Section renderable.
-     * @return
+     * @param \format_remuiformat\output\format_remuiformat_card_all_sections_summary $section Object of the Section renderable.
      */
     public function render_card_all_sections_summary(
         \format_remuiformat\output\format_remuiformat_card_all_sections_summary $section) {
@@ -621,8 +636,7 @@ class format_remuiformat_renderer extends format_section_renderer_base {
 
     /**
      * Renders the card one section page.
-     * @param  \format_cards\output\format_cards_activity $activity Object of Activity renderable
-     * @return
+     * @param \format_remuiformat\output\format_remuiformat_card_one_section $activity Object of Activity renderable
      */
     public function render_card_one_section(
         \format_remuiformat\output\format_remuiformat_card_one_section $activity) {
@@ -632,8 +646,7 @@ class format_remuiformat_renderer extends format_section_renderer_base {
 
     /**
      * Renders the list all sections page with all activities.
-     * @param  \format_cards\output\format_cards_section $section Object of the Section renderable.
-     * @return
+     * @param \format_remuiformat\output\format_remuiformat_list_all_sections $section Object of the Section renderable.
      */
     public function render_list_all_sections(
         \format_remuiformat\output\format_remuiformat_list_all_sections $section) {
@@ -648,8 +661,7 @@ class format_remuiformat_renderer extends format_section_renderer_base {
     /**
      * Renders the list all sections page without activities.
      * List Format -> All Section Page.
-     * @param  \format_cards\output\format_cards_section $section Object of the Section renderable.
-     * @return
+     * @param \format_remuiformat\output\format_remuiformat_list_all_sections_summary $section Object of the Section renderable.
      */
     public function render_list_all_sections_summary(
         \format_remuiformat\output\format_remuiformat_list_all_sections_summary $section) {
@@ -663,8 +675,7 @@ class format_remuiformat_renderer extends format_section_renderer_base {
 
     /**
      * Renders the list one section page.
-     * @param  \format_cards\output\format_cards_activity $activity Object of Activity renderable
-     * @return
+     * @param \format_remuiformat\output\format_remuiformat_list_one_section $activity Object of Activity renderable
      */
     public function render_list_one_section(
         \format_remuiformat\output\format_remuiformat_list_one_section $activity) {
@@ -675,42 +686,48 @@ class format_remuiformat_renderer extends format_section_renderer_base {
     /**
      * Limit string without break html tags.
      * Supports UTF8
-     * 
+     *
      * @param string $value
      * @param int $limit Default 100
      */
-    function abstract_html_contents($value, $limit = 100){
+    public function abstract_html_contents($value, $limit = 100) {
         $value = preg_replace("/<img[^>]+\>/i", "", $value);
-        
+
         if (mb_strwidth($value, 'UTF-8') <= $limit) {
             return $value;
         }
-        
+
         // Strip text with HTML tags, sum html len tags too.
         // Is there another way to do it?
         do {
             $len = mb_strwidth( $value, 'UTF-8' );
-            $len_stripped = mb_strwidth( strip_tags($value), 'UTF-8' );
-            $len_tags = $len - $len_stripped;
-            
-            $value = mb_strimwidth($value, 0, $limit+$len_tags, '', 'UTF-8');
-        } while( $len_stripped > $limit);
-        
-        // Append ... 
+            $lenstripped = mb_strwidth( strip_tags($value), 'UTF-8' );
+            $lentags = $len - $lenstripped;
+
+            $value = mb_strimwidth($value, 0, $limit + $lentags, '', 'UTF-8');
+        } while ($lenstripped > $limit);
+
+        // Append ...
         $value .= '...';
-        
-        // Load as HTML ignoring errors
+
+        // Load as HTML ignoring errors.
         $dom = new DOMDocument();
-        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $value, LIBXML_HTML_NODEFDTD);      
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $value, LIBXML_HTML_NODEFDTD);
 
-        // Fix the html errors
+        // Fix the html errors.
         $value = $dom->saveHtml($dom->getElementsByTagName('body')->item(0));
-        
-        // Remove body tag
-        $value = mb_strimwidth($value, 6, mb_strwidth($value, 'UTF-8') - 13, '', 'UTF-8'); // <body> and </body>
 
-        // Remove empty tags
-        $value =  preg_replace('/<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/', '', $value);
+        // Remove body tag.
+        $value = mb_strimwidth($value, 6, mb_strwidth($value, 'UTF-8') - 13, '', 'UTF-8'); // <body> and </body>.
+
+        // Remove empty tags.
+        if (stripos("<source", $value) !== false) {
+            $value = preg_replace(
+                '/<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/',
+                '',
+                $value
+            );
+        }
 
         // Return.
         return $value;

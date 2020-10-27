@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * This file keeps track of upgrades to the navigation block
  *
@@ -40,6 +39,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Perform database upgrade
+ * @param  int $oldversion Older plugin version
+ * @return bool
+ */
 function xmldb_format_remuiformat_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
@@ -69,4 +73,5 @@ function xmldb_format_remuiformat_upgrade($oldversion) {
         // Remuiformat savepoint reached.
         upgrade_plugin_savepoint(true, 2020061800, 'format', 'remuiformat');
     }
+    return true;
 }

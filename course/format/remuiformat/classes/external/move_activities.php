@@ -13,11 +13,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Provides {@link format_remuiformat\external\move_activities} trait.
+ * Provides format_remuiformat\external\move_activities trait.
  *
- * @package     codefiddle
+ * @package     format_remuiformat
  * @category    external
  * @copyright   2018 Wisdmlabs
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -51,6 +50,13 @@ trait move_activities {
         );
     }
 
+    /**
+     * Move activities between section
+     * @param  int    $courseid  Course id
+     * @param  int    $sectionid Section id
+     * @param  string $sequence  Section sequence
+     * @return array             Moving status
+     */
     public static function move_activities($courseid, $sectionid, $sequence) {
         global $DB;
         $table = 'course_sections';
@@ -72,6 +78,10 @@ trait move_activities {
         return $output;
     }
 
+    /**
+     * Describes the parameters for move activities return
+     * @return external_single_structure
+     */
     public static function move_activities_returns() {
         return new \external_single_structure (
             array(
