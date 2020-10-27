@@ -16,6 +16,9 @@
         <FIELD NAME="canvas_width" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="800" SEQUENCE="false" />
         <FIELD NAME="can_change_key" TYPE="char" LENGTH="3" NOTNULL="true" DEFAULT="Yes" SEQUENCE="false" />
         <FIELD NAME="can_change_time" TYPE="char" LENGTH="3" NOTNULL="true" DEFAULT="Yes" SEQUENCE="false" />
+        <FIELD NAME="hide_audio_player" TYPE="binary" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="hide_time_signature" TYPE="binary" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="hide_bars" TYPE="binary" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

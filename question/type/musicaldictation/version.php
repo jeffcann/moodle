@@ -26,6 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_musicaldictation';
-$plugin->version   = 2020072702;
+$plugin->version   = 2020102701;
 $plugin->requires  = 2020060900;
 $plugin->maturity  = MATURITY_ALPHA;

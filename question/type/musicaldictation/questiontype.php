@@ -39,7 +39,8 @@ require_once($CFG->dirroot . '/question/type/musicaldictation/question.php');
  */
 class qtype_musicaldictation extends question_type {
     public function extra_question_fields() {
-        return array('qtype_musicaldict_options',
+        return array(
+            'qtype_musicaldict_options',
             'audio_file_url',
             'initial_score',
             'canvas_height',
@@ -47,7 +48,11 @@ class qtype_musicaldictation extends question_type {
             'voice_count',
             'can_change_key',
             'can_change_time',
-            'max_play_count');
+            'max_play_count',
+            'hide_audio_player',
+            'hide_time_signature',
+            'hide_bars'
+        );
     }
 
     public function move_files($questionid, $oldcontextid, $newcontextid) {

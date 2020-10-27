@@ -99,11 +99,14 @@ class qtype_musicaldictation_renderer extends qtype_renderer {
             'data-audio-file-url' =>  base64_encode($audiourl),
             'data-initial-score' =>   base64_encode($currentanswer ? $currentanswer : $question->initial_score),
             'data-canvas-height' =>   array(200, 300, 450, 550)[$question->canvas_height],
-            'data-canvas-width' =>    array(600, 800, 1000, 1200)[$question->canvas_width],
+            'data-canvas-width' =>    array(300, 450, 600, 800, 1000, 1200)[$question->canvas_width],
             'data-voice-count' =>     $question->voice_count + 1,
             'data-can-change-key' =>  $question->can_change_key,
             'data-can-change-time' => $question->can_change_time,
             'data-max-play-count' =>  $question->max_play_count,
+            'data-hide-audio-player' => $question->hide_audio_player,
+            'data-hide-time-signature' => $question->hide_time_signature,
+            'data-hide-bars' => $question->hide_bars,
             'data-readonly' => ($options->readonly ? "readonly" : "")
         );
 

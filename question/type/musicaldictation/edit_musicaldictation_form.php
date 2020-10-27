@@ -36,11 +36,14 @@ class qtype_musicaldictation_edit_form extends question_edit_form {
         $mform->addElement('filepicker', 'audio_file_url', "Audio file", null, array('maxbytes' => 100000000, 'accepted_types' => array("MP3", "M4A")));
         $mform->addElement('textarea', 'initial_score', 'Initial score setup', '{}');
         $mform->addElement('select',   'canvas_height', 'Canvas height', array(200, 300, 450, 550));
-        $mform->addElement('select',   'canvas_width', 'Canvas width', array(600, 800, 1000, 1200));
+        $mform->addElement('select',   'canvas_width', 'Canvas width', array(300, 450, 600, 800, 1000, 1200));
         $mform->addElement('select',   'voice_count', 'Number of voices', array(1, 2, 3, 4));
         $mform->addElement('select',   'can_change_key', 'Can change key', array('No', 'Yes'));
         $mform->addElement('select',   'can_change_time', 'Can change timing', array('No', 'Yes'));
         $mform->addElement('select',   'max_play_count', 'Maximum number of plays', array("Unlimited", 1, 2, 3, 4, 5, 6, 7, 8));
+        $mform->addElement('select',   'hide_audio_player', 'Hide the audio player', array('No', 'Yes'));
+        $mform->addElement('select',   'hide_time_signature', 'Hide time signatures', array('No', 'Yes'));
+        $mform->addElement('select',   'hide_bars', 'Hide Bar tool', array('No', 'Yes'));
         $mform->addElement('static',   'answersinstruct', get_string('correctanswers', 'qtype_musicaldictation'), get_string('filloutoneanswer', 'qtype_musicaldictation'));
 
         $mform->closeHeaderBefore('answersinstruct');
