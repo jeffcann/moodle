@@ -30,8 +30,9 @@ function xmldb_qtype_musicaldictation_upgrade($oldversion) {
 
         $newfields = array('hide_audio_player','hide_time_signature','hide_bars');
         foreach ($newfields as $newfield) {
-            $field = new xmldb_field($newfield, XMLDB_TYPE_BINARY, null, null, XMLDB_NOTNULL, null, false);
+            $field = new xmldb_field($newfield, XMLDB_TYPE_INTEGER, 1, true, XMLDB_NOTNULL, null, 0);
 
+            // Conditionally launch add field.
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
             }
@@ -43,3 +44,4 @@ function xmldb_qtype_musicaldictation_upgrade($oldversion) {
 
     return true;
 }
+
