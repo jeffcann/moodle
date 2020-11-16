@@ -49,7 +49,7 @@ class enrol_coursecompleted_manager_testcase extends \advanced_testcase {
     /**
      * Tests initial setup.
      */
-    protected function setUp() {
+    protected function setUp():void {
         global $CFG, $DB;
         $CFG->enablecompletion = true;
         $this->resetAfterTest(true);
@@ -129,6 +129,51 @@ class enrol_coursecompleted_manager_testcase extends \advanced_testcase {
         ob_start();
         include($CFG->dirroot . '/enrol/coursecompleted/manage.php');
         $html = ob_get_clean();
-        $this->assertContains('No users found', $html);
+        $this->assertStringContainsString('No users found', $html);
+    }
+
+    /**
+     * Test manager oldusers.
+     */
+    public function test_manager_oldusers() {
+        global $CFG;
+        $this->preventResetByRollback();
+        $this->setAdminUser();
+        $sink = $this->redirectEmails();
+        $sank = $this->redirectMessages();
+        $ccompletion = new \completion_completion(['course' => $this->course->id, 'userid' => $this->student->id]);
+        $ccompletion->mark_complete(time());
+        chdir($CFG->dirroot . '/enrol/coursecompleted');
+        $_POST['enrolid'] = $this->instance->id;
+        ob_start();
+        include($CFG->dirroot . '/enrol/coursecompleted/manage.php');
+        $html = ob_get_clean();
+        $this->assertStringNotContainsString('No users found', $html);
+        $sink->close();
+        $sank->close();
+    }
+
+    /**
+     * Test submit manager oldusers.
+     */
+    public function test_manager_submit() {
+        global $CFG;
+        $this->preventResetByRollback();
+        $this->setAdminUser();
+        set_config('messaging', false);
+        $sink = $this->redirectEmails();
+        $sank = $this->redirectMessages();
+        $ccompletion = new \completion_completion(['course' => $this->course->id, 'userid' => $this->student->id]);
+        $ccompletion->mark_complete(time());
+        chdir($CFG->dirroot . '/enrol/coursecompleted');
+        $_POST['enrolid'] = $this->instance->id;
+        $_POST['action'] = 'enrol';
+        $_POST['sesskey'] = sesskey();
+        ob_start();
+        include($CFG->dirroot . '/enrol/coursecompleted/manage.php');
+        $html = ob_get_clean();
+        $this->assertStringNotContainsString('No users found', $html);
+        $sink->close();
+        $sank->close();
     }
 }
