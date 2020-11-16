@@ -44,3 +44,4 @@ function xmldb_qtype_musicaldictation_upgrade($oldversion) {
 
     return true;
 }
+
