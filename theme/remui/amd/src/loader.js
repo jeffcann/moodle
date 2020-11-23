@@ -23,8 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      2.9
  */
+"use strict";
 define([
     'jquery',
+    'core/ajax',
     'theme_remui/tether',
     'core/event',
     'theme_remui/aria',
@@ -33,6 +35,7 @@ define([
     'theme_remui/notice',
     'core/str',
     'core/pubsub',
+    'core/modal_factory',
     'theme_remui/pending',
     'theme_remui/util',
     'theme_remui/alert',
@@ -46,23 +49,25 @@ define([
     'theme_remui/tooltip',
     'theme_remui/popover',
     'theme_remui/skintool'
-    ], function(
-        $,
-        Tether,
-        Event,
-        Aria,
-        breakpoints,
-        Drawer,
-        Notice,
-        str,
-        PubSub
-    ) {
+], function(
+    $,
+    Ajax,
+    Tether,
+    Event,
+    Aria,
+    breakpoints,
+    Drawer,
+    Notice,
+    str,
+    PubSub,
+    ModalFactory
+) {
 
     window.jQuery = $;
     window.Tether = Tether;
     Drawer.init();
 
-    // We do twice because: https://github.com/twbs/bootstrap/issues/10547
+    // We do twice because: https://github.com/twbs/bootstrap/issues/10547 end.
     $('body').popover({
         trigger: 'focus',
         selector: "[data-toggle=popover][data-trigger!=hover]"
@@ -88,7 +93,7 @@ define([
         });
     });
 
-    // Settings update on change
+    // Settings update on change.
     $(`#id_s_theme_remui_frontpagechooser`).change(function() {
         window.onbeforeunload = null;
         this.form.submit();
@@ -103,17 +108,17 @@ define([
         }
     });
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         if ($("body").hasClass("editing") && $("body").hasClass("hasblocks")) {
             $(".page-aside-switch .fa-angle-left").trigger('click');
         }
         resetSidebar();
-        
-        // collapsible menu in header implementation
-        // moves excess menu items to 3 dot menu on resize and based on available screen space
 
-        // greedy menu js implementation
+        // Collapsible menu in header implementation.
+        // Moves excess menu items to 3 dot menu on resize and based on available screen space.
+
+        // Greedy menu js implementation.
         var $btn = $('nav.greedy .menu-toggle');
         var $vlinks = $('nav.greedy .links');
         var $hlinks = $('nav.greedy .hidden-links');
@@ -121,65 +126,56 @@ define([
         var totalSpace = 0;
         var breakWidths = [];
         var availableSpace, numOfVisibleItems, requiredSpace;
-        
-        // Get initial state
+
+        // Get initial state.
         $vlinks.children().outerWidth(function(i, w) {
             totalSpace += w;
             numOfItems += 1;
             breakWidths.push(totalSpace);
         });
 
-        function wdmCollapsibleNavMenu() {        
-            // Get instant state
+        /**
+         * Custom collapsible navigation menu
+         */
+        function wdmCollapsibleNavMenu() {
+            // Get instant state.
             availableSpace = $vlinks.width() - 10;
             numOfVisibleItems = $vlinks.children().length;
             requiredSpace = breakWidths[numOfVisibleItems - 1];
-        
-            // There is not enought space
+
+            // There is not enought space.
             if (requiredSpace > availableSpace) {
-            $vlinks.children().last().prependTo($hlinks);
-            numOfVisibleItems -= 1;
-            wdmCollapsibleNavMenu();
-            // There is more than enough space
+                $vlinks.children().last().prependTo($hlinks);
+                numOfVisibleItems -= 1;
+                wdmCollapsibleNavMenu();
+                // There is more than enough space.
             } else if (availableSpace > breakWidths[numOfVisibleItems]) {
-            $hlinks.children().first().appendTo($vlinks);
-            numOfVisibleItems += 1;
+                $hlinks.children().first().appendTo($vlinks);
+                numOfVisibleItems += 1;
             }
-            // Update the button accordingly
+            // Update the button accordingly.
             $btn.attr("count", numOfItems - numOfVisibleItems);
             if (numOfVisibleItems === numOfItems) {
-            $btn.addClass('hidden');
-            } else $btn.removeClass('hidden');
+                $btn.addClass('hidden');
+            } else {
+                $btn.removeClass('hidden');
+            }
         }
 
-        // move collpasible menu toggle in front of ul list on mobiel devices
-        // function wdmMoveMenuToggleButton(resize = 0) {
-        //     if($(window).width() < 481) {
-        //         $( "button.menu-toggle" ).insertBefore( $( ".wdm-custom-menus.links" ) );
-        //     }
-
-        //     if(resize == 1) {
-        //         if($(window).width() > 480) {
-        //             $( "button.menu-toggle" ).insertAfter( $( ".wdm-custom-menus.links" ) );
-        //         }
-        //     }
-        // }
-
-        // init collapsible nav menu
+        // Init collapsible nav menu.
         wdmCollapsibleNavMenu();
-        //wdmMoveMenuToggleButton();
 
-        // hide / show hidden-links ul on click button
+        // Hide / show hidden-links ul on click button.
         $btn.on('click', function() {
             var currLeft = $(this).offset().left - 25;
             $hlinks.css({
                 left: currLeft + "px"
-            })
+            });
             $hlinks.toggleClass('hidden');
         });
 
-        // close when clicking somewhere else
-        $(document.body).on('click', function (evt) {
+        // Close when clicking somewhere else.
+        $(document.body).on('click', function(evt) {
             let IGNORED_ELS = 'ul.hidden-links, button.menu-toggle, .modal, .alertify, .-handled-lick';
             if (evt.button === 0 && !$('ul.hidden-links').hasClass('hidden')) {
                 var target = evt.target;
@@ -189,35 +185,34 @@ define([
             }
         });
 
-        // resize menu when drawer opens closes
-        PubSub.subscribe('nav-drawer-toggle-end', function(open) {
+        // Resize menu when drawer opens closes.
+        PubSub.subscribe('nav-drawer-toggle-end', function() {
             wdmCollapsibleNavMenu();
         });
 
-        // Window listeners
+        // Window listeners.
         $(window).resize(function() {
             wdmCollapsibleNavMenu();
-            //wdmMoveMenuToggleButton(1);
         });
 
-        /** collapsible menu JS ends */
+        // Collapsible menu JS ends.
 
-        // Auto hide messaging bar when not merged in sidebar
+        // Auto hide messaging bar when not merged in sidebar.
         if ($('[data-region="right-hand-drawer"]').parents('#sidebar-message').length == 0) {
-            $(document.body).on('click', function (evt) {
-                if (evt.button ===0 && !jQuery('[data-region="right-hand-drawer"]').hasClass('hidden')) {
-                    // Hide Message Drawer if click outsite
+            $(document.body).on('click', function(evt) {
+                if (evt.button === 0 && !$('[data-region="right-hand-drawer"]').hasClass('hidden')) {
+                    // Hide Message Drawer if click outsite.
                     var IGNORE_DRAWER_BTN = '[data-region="right-hand-drawer"], [href="#sidebar-message"]';
                     var target = evt.target;
-                    if (target === evt.currentTarget || !jQuery(target).closest(IGNORE_DRAWER_BTN).length) {
-                        jQuery('[data-region="right-hand-drawer"]').addClass("hidden");
-                        jQuery(IGNORE_DRAWER_BTN).removeClass('active');
+                    if (target === evt.currentTarget || !$(target).closest(IGNORE_DRAWER_BTN).length) {
+                        $('[data-region="right-hand-drawer"]').addClass("hidden");
+                        $(IGNORE_DRAWER_BTN).removeClass('active');
                     }
                 }
             });
         } else {
-            // Prevent messaging bar toggle when merged in sidebar
-            $('.page-aside .nav-item .nav-link[href="#sidebar-message"]').click(function(e) {
+            // Prevent messaging bar toggle when merged in sidebar.
+            $('.page-aside .nav-item .nav-link[href="#sidebar-message"]').click(function() {
                 $('[data-region="right-hand-drawer"]').removeClass('hidden');
             });
         }
@@ -227,7 +222,7 @@ define([
     $(".page-aside-switch .fa-thumb-tack").on('click', function() {
         $("body").removeClass('sidebar-open');
         $("body").toggleClass('sidebar-pinned');
-        if($('body').hasClass('sidebar-pinned')) {
+        if ($('body').hasClass('sidebar-pinned')) {
             M.util.set_user_preference('pin_aside', 'true');
             Notice.info(M.util.get_string('sidebarpinned', 'theme_remui'));
             $(this).prop('title', M.util.get_string('unpinsidebar', 'theme_remui'));
@@ -237,9 +232,14 @@ define([
             $(this).prop('title', M.util.get_string('pinsidebar', 'theme_remui'));
         }
     });
+    // This function ...  handles the aria-selected attribute for tabs in right sidebar.
+    $('.page-aside .site-sidebar-nav .nav-link').on('click', function(){
+        $('.page-aside .site-sidebar-nav .nav-link').attr('aria-selected', false);
+        $(this).attr('aria-selected', true);
+    });
 
     // Close Right Sidebar on click outside.
-    $(document.body).on('click', function (evt) {
+    $(document.body).on('click', function(evt) {
         let IGNORED_ELS = '.page-aside, .modal, .alertify, .-handled-lick';
         if (evt.button === 0 && $('body').hasClass('sidebar-open')) {
             var target = evt.target;
@@ -253,40 +253,40 @@ define([
 
     // Scroll to top.
     $("#gotop").click(function() {
-        $('html, body').animate({scrollTop:0}, $(window).scrollTop() / 6);
+        $('html, body').animate({scrollTop: 0}, $(window).scrollTop() / 6);
         return false;
     });
 
     // Hide and Show Go to top button.
     $(window).scroll(function() {
         if ($(this).scrollTop() > 300) {
-          $('#gotop').removeClass("d-none").addClass("d-flex");
+            $('#gotop').removeClass("d-none").addClass("d-flex");
         } else {
-          $('#gotop').removeClass("d-flex").addClass("d-none");
+            $('#gotop').removeClass("d-flex").addClass("d-none");
         }
     });
 
     // Display Submenu on Hover on closed sidebar.
-    $('#nav-drawer .list-group-item:not(.activity):not([data-indent="1"])').hover(function () {
+    $('#nav-drawer .list-group-item:not(.activity):not([data-indent="1"])').hover(function() {
         if (!$('#nav-drawer').hasClass('closed')) {
             return;
         }
         let distanceFromTop = $(this).position().top + 66;
         let screenHeight = $(window).height();
         $(this).addClass('hovered');
-        $('.media-body').css('top', `${distanceFromTop}px`);
+        $('.media-body').css('top', distanceFromTop + 'px');
         // Sub Menu.
+        let topdistance;
         let submenuid = $(this).attr('data-target');
-        if (submenuid != undefined && submenuid != "" ) {
+        if (submenuid != undefined && submenuid != "") {
             let submenu = $(`${submenuid}`);
             if (submenu.length > 0) {
-                let topdistance;
                 if (distanceFromTop < (screenHeight / 2)) {
                     topdistance = distanceFromTop + 52;
                 } else {
                     topdistance = distanceFromTop - $(submenu).height();
                 }
-                $(submenu).css('top', `${topdistance}px`);
+                $(submenu).css('top', topdistance + 'px');
                 $(submenu).addClass('pop-over');
             }
         }
@@ -296,54 +296,83 @@ define([
             var subcourses = $('#nav-drawer .mycoursesubmenu');
             if (distanceFromTop < (screenHeight / 2)) {
                 topdistance = distanceFromTop + 52;
-                $(subcourses).css('top', `${topdistance}px`);
+                $(subcourses).css('top', topdistance + 'px');
                 $(subcourses).addClass('pop-over');
             } else {
                 $(subcourses).addClass('pop-over');
                 topdistance = distanceFromTop - $(subcourses).height();
-                $(subcourses).css('top', `${topdistance}px`);
+                $(subcourses).css('top', topdistance + 'px');
             }
         }
-    }, function () {
+    }, function() {
         $(this).removeClass('hovered');
         $('.sub-menu').removeClass('pop-over');
         $('#nav-drawer .mycoursesubmenu').removeClass('pop-over');
     });
 
-    $('.sub-menu').hover(function () {
+    $('.sub-menu').hover(function() {
         let elid = $(this).attr('id');
-        let parentel = $(`#nav-drawer .list-group-item[data-target="#${elid}"]`);
+        let parentel = $('#nav-drawer .list-group-item[data-target="#' + elid + '"]');
         $(parentel).trigger('mouseenter');
         $(parentel).trigger('hover');
         $(parentel).trigger('mouseover');
-    }, function () {
+    }, function() {
         let elid = $(this).attr('id');
-        let parentel = $(`#nav-drawer .list-group-item[data-target="#${elid}"]`);
+        let parentel = $('#nav-drawer .list-group-item[data-target="#' + elid + '"]');
         $(parentel).trigger('mouseout');
     });
 
     // My Courses.
-    $('#nav-drawer .mycoursesubmenu').hover(function () {
+    $('#nav-drawer .mycoursesubmenu').hover(function() {
         let elkey = $(this).attr('data-parent-key');
-        let parentel = $(`#nav-drawer .list-group-item[data-key="${elkey}"]`);
+        let parentel = $('#nav-drawer .list-group-item[data-key="' + elkey + '"]');
         $(parentel).trigger('mouseenter');
         $(parentel).trigger('hover');
         $(parentel).trigger('mouseover');
-    }, function () {
+    }, function() {
         let elkey = $(this).attr('data-parent-key');
-        let parentel = $(`#nav-drawer .list-group-item[data-key="${elkey}"]`);
+        let parentel = $('#nav-drawer .list-group-item[data-key="' + elkey + '"]');
         $(parentel).trigger('mouseout');
     });
 
-    // flat navigation mycourses ul dropdown support
+    // Flat navigation mycourses ul dropdown support.
     $('#nav-drawer .toggle-menu').click(function(e) {
         e.preventDefault();
         let key = $(this).attr('data-key');
-        $('#nav-drawer .toggle-menu').toggleClass('show');
-        $(`#nav-drawer a.list-group-item[data-parent-key="${key}"]`).toggleClass('show');
+        $('#nav-drawer .toggle-menu').toggleClass('rotate90');
+        $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]').toggleClass('show');
     });
 
-    // toggle section show or hide in default course formats
+    $('#nav-drawer .toggle-menu').keypress(function(e){
+        if(e.keyCode == 32 || e.keyCode == 13){
+            //spacebar or enter clicks focused element
+            try {
+                e.preventDefault();
+                let setfocus = 0;
+                let key = $(this).attr('data-key');
+                $('#nav-drawer .fa-angle-right').toggleClass('rotate90');
+                $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]').toggleClass('show');
+                // Fetch all sub menu items and change their tabindex property 
+                $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]').each(function( index ) {
+                    if ($('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]')[index].tabIndex == -1){
+                        setfocus = 1;
+                        $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]')[index].tabIndex = 0;
+                    } else {
+                        $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]')[index].tabIndex = -1;
+                    }
+                });
+                // Set the focus to first element of List
+                if (setfocus) {
+                    $('#nav-drawer a.list-group-item[data-parent-key="' + key + '"]')[0].focus();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }            
+        }
+    });
+
+    // Toggle section show or hide in default course formats.
     $('.sectionname .toggle-section').click(function() {
         let parentEl = $(this).parent().parent().parent();
         let sectionEl = parentEl.find('ul.section');
@@ -351,22 +380,63 @@ define([
             $(this).toggleClass('down');
             $(sectionEl).toggleClass('hidden');
         }
+
+        if ($(this).attr('aria-expanded') == 'false') { // region is collapsed
+            // update the aria-expanded attribute of the region
+            $(this).attr('aria-expanded', 'true');
+        }
+        else { // region is expanded
+            // update the aria-expanded attribute of the region
+            $(this).attr('aria-expanded', 'false');
+        }
+    });
+
+    $('.sectionname .toggle-section').keypress(function(e){
+        if(e.keyCode == 32 || e.keyCode == 13){
+            //spacebar or enter clicks focused element
+            try {
+                let parentEl = $(this).parent().parent().parent();
+                let sectionEl = parentEl.find('ul.section');
+                if (sectionEl.length) {
+                    $(this).toggleClass('down');
+                    $(sectionEl).toggleClass('hidden');
+                }
+                if ($(this).attr('aria-expanded') == 'false') { // region is collapsed
+                    // update the aria-expanded attribute of the region
+                    $(this).attr('aria-expanded', 'true');
+                    $(sectionEl).focus();
+                }
+                else { // region is expanded
+                    // update the aria-expanded attribute of the region
+                    $(this).attr('aria-expanded', 'false');
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }            
+        }
     });
 
     // Add signup form fields placeholders.
-    $(".signupform .fcontainer .form-group").each(function(index) {
+    $(".signupform .fcontainer .form-group").each(function() {
         var label = $.trim($(".col-form-label", this).text());
-        $(".felement input", this).attr('placeholder', label); 
+        $(".felement input", this).attr('placeholder', label);
     });
 
     // Function for fullscreen.
-    $('#toggleFullscreen').click(function () {
+    $('#toggleFullscreen').click(function() {
         $(this).toggleClass('collapse');
         toggleFullScreen();
     });
 
+    /**
+     * Toggle fullscreen
+     */
     function toggleFullScreen() {
-        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+        if (document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement) {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.mozCancelFullScreen) {
@@ -390,7 +460,7 @@ define([
         }
     }
 
-    // Move Quiz Timer from sidebar to main content in mobile view
+    // Move Quiz Timer from sidebar to main content in mobile view.
     if (document.getElementById('quiz-timer')) {
         var quiztimer = document.querySelector('#quiz-timer');
         var breadcrumb = document.querySelector("#region-main");
@@ -405,10 +475,12 @@ define([
         $(this).next().find('.nav-item .nav-link.active').trigger('click');
     });
 
-    // close drawer and sidebar automatically on smaller window size
+    /**
+     * Close drawer and sidebar automatically on smaller window size.
+     */
     function resetSidebar() {
         var width = $(window).width();
-        if (width < 1366) {
+        if (width < 992) {
             if ($('body').hasClass('drawer-open-left')) {
                 $('button[data-action="toggle-drawer"]').trigger('click');
             }
@@ -419,12 +491,37 @@ define([
         }
     }
 
-    // resize listner for reset sidebar function
-    $(window).resize(function () {
+    // Resize listner for reset sidebar function.
+    $(window).resize(function() {
         resetSidebar();
     });
 
     $('.navbar-toggler').click(function() {
         $('.navbar-nav.right-menu').toggleClass('show');
+    });
+
+    $('body').on('click', '.showchangelog', function(event) {
+        event.preventDefault();
+        var trigger = $('#create-modal');
+        ModalFactory.create({
+            title: M.util.get_string('changelog', 'theme_remui'),
+            body: $(this).data('log')
+        }, trigger).done(function(modal) {
+            modal.show();
+        });
+        return;
+    });
+
+    // Hide update-nag ribbon.
+    $('.update-nag [data-dismiss="alert"]').click(function() {
+        Ajax.call([{
+            'methodname': 'theme_remui_hide_update',
+            'args': {}
+        }]);
+    });
+
+    // Save the preference, after dismiss the announcement
+    $('.site-announcement #dismiss_announcement').click(function(){
+        M.util.set_user_preference('remui_dismised_announcement', true);
     });
 });

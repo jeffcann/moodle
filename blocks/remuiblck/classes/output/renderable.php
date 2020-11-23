@@ -62,13 +62,18 @@ class remuiblck_courseprogress implements renderable, templatable {
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated - Can be viewed by only Admins, Teachers and Managers.
      */
     public function can_view() {
-        $roles = array_diff(array_values($this->options['roles']), array('student'));
-        if (!isset($roles['admin']) && empty($roles)) {
-            return false;
+        if(is_siteadmin()){
+            return true;
         }
-        return true;
+        if (in_array("manager", $this->options['roles']) ||
+            in_array("teacher", $this->options['roles']) ||
+            in_array("editingteacher", $this->options['roles'])) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -81,6 +86,8 @@ class remuiblck_courseprogress implements renderable, templatable {
         $output = $output;
         $context = new stdClass();
         $context->block = $this->block;
+        $context->alwaysload = get_user_preferences('always-load-progress', false) == true;
+        $context->alwaysloadwarning = get_user_preferences('always-load-warning', false) == true ? 1 : 0;
         return $context;
     }
 }
@@ -163,6 +170,20 @@ class remuiblck_enrolledusers implements renderable, templatable {
     }
 
     /**
+     * Return true if current user can view this block
+     * @return bool True if user can view
+     * @updated - Can be viewed by only Admins and Managers.
+     */
+    public function can_view() {
+        if(is_siteadmin()){
+            return true;
+        }
+        if (in_array("manager", $this->options['roles'])) {
+            return true;
+        }
+        return false;
+    }
+    /**
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param \renderer_base $output
@@ -208,6 +229,23 @@ class remuiblck_quizattempts implements renderable, templatable {
     public function __construct($block, $options) {
         $this->block   = $block;
         $this->options = $options;
+    }
+
+    /**
+     * Return true if current user can view this block
+     * @return bool True if user can view
+     * @updated - Can be viewed by only Admins, Teachers and Managers.
+     */
+    public function can_view() {
+        if(is_siteadmin()){
+            return true;
+        }
+        if (in_array("manager", $this->options['roles']) ||
+            in_array("teacher", $this->options['roles']) ||
+            in_array("editingteacher", $this->options['roles'])) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -257,16 +295,18 @@ class remuiblck_courseanlytics implements renderable, templatable {
         $this->options = $options;
     }
 
+
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated => Do not need function as Analytics block is visible to all users.
      */
-    public function can_view() {
-        if (!isset($roles['admin']) && empty($this->options['roles'])) {
-            return false;
-        }
-        return true;
-    }
+    // public function can_view() {
+    //     if (!isset($roles['admin']) && empty($this->options['roles'])) {
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     /**
      * Export this data so it can be used as the context for a mustache template.
@@ -320,13 +360,16 @@ class remuiblck_latestmembers implements renderable, templatable {
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated - Can be viewed by only Admins and Managers.
      */
     public function can_view() {
-        $roles = array_diff(array_values($this->options['roles']), array('student'));
-        if (!isset($roles['admin']) && empty($roles)) {
-            return false;
+        if(is_siteadmin()){
+            return true;
         }
-        return true;
+        if (in_array("manager", $this->options['roles'])) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -371,9 +414,18 @@ class remuiblck_addnotes implements renderable, templatable {
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated - Can be viewed by only Admins, Teachers and Managers.
      */
     public function can_view() {
-        return !empty($this->options['roles']);
+        if(is_siteadmin()){
+            return true;
+        }
+        if (in_array("manager", $this->options['roles']) ||
+            in_array("teacher", $this->options['roles']) ||
+            in_array("editingteacher", $this->options['roles'])) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -427,10 +479,11 @@ class remuiblck_recentfeedback implements renderable, templatable {
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated => Do not need function as Analytics block is visible to all users.
      */
-    public function can_view() {
-        return !empty($this->options['roles']);
-    }
+    // public function can_view() {
+    //     return !empty($this->options['roles']);
+    // }
 
     /**
      * Export this data so it can be used as the context for a mustache template.
@@ -476,10 +529,11 @@ class remuiblck_recentforums implements renderable, templatable {
     /**
      * Return true if current user can view this block
      * @return bool True if user can view
+     * @updated => Do not need function as Analytics block is visible to all users.
      */
-    public function can_view() {
-        return !empty($this->options['roles']);
-    }
+    // public function can_view() {
+    //     return !empty($this->options['roles']);
+    // }
 
     /**
      * Export this data so it can be used as the context for a mustache template.
@@ -654,6 +708,22 @@ class remuiblck_managecourses implements renderable, templatable {
         $this->options = $options;
     }
 
+    /**
+     * Return true if current user can view this block
+     * @return bool True if user can view
+     * @updated - Can be viewed by only Admins, Teachers and Managers.
+     */
+    public function can_view() {
+        if(is_siteadmin()){
+            return true;
+        }
+        if (in_array("manager", $this->options['roles']) ||
+            in_array("teacher", $this->options['roles']) ||
+            in_array("editingteacher", $this->options['roles'])) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Export this data so it can be used as the context for a mustache template.
      *

@@ -75,14 +75,12 @@ function get_content_from_renderer($block, $renderable) {
 function get_blocks_list($allowedonly = false, $userpref = false) {
 
     // retrieve the blocks list from
-
-    $blockslist = get_default_blocks_list();
+    $blockslist = unserialize(get_config('block_remuiblck', 'blocks_list_pos'));
 
     // list the blocks allowed
     if ($allowedonly) {
         $blockslist = get_list_of_blocks_allowed($blockslist);
     }
-
     // check saved state of blocks
     if ($userpref) {
         $blockslist = sort_according_saved_pos($blockslist);

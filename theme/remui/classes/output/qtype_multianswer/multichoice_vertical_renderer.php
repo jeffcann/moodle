@@ -16,15 +16,18 @@
 
 /**
  * Multianswer question renderer classes.
- * Handle shortanswer, numerical and various multichoice subquestions
  *
- * @package    qtype
- * @subpackage multianswer
- * @copyright  2010 Pierre Pichet
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Handle shortanswer, numerical and various multichoice subquestions
+ * @package   theme_remui
+ * @copyright 2010 Pierre Pichet
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace theme_remui\output\qtype_multianswer;
+
+defined('MOODLE_INTERNAL') || die();
+
 use question_attempt;
 use question_display_options;
 use question_graded_automatically;
@@ -44,6 +47,15 @@ require_once($CFG->dirroot . '/question/type/shortanswer/renderer.php');
  */
 class multichoice_vertical_renderer extends \qtype_multianswer_multichoice_vertical_renderer {
 
+    /**
+     * Output the content of the subquestion.
+     *
+     * @param question_attempt              $qa      Question attemp
+     * @param question_display_options      $options Question display options
+     * @param int                           $index   Index
+     * @param question_graded_automatically $subq    Question graded automatically
+     * @return string
+     */
     public function subquestion(question_attempt $qa, question_display_options $options,
             $index, question_graded_automatically $subq) {
 

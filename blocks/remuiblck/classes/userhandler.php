@@ -179,4 +179,50 @@ class userhandler {
         }
         return $roles;
     }
+
+    /**
+     * Some moodle functions don't work correctly with specific userids and this provides a hacky workaround.
+     *
+     * Temporarily swaps global USER variable.
+     * @param bool|stdClass|int $userorid
+     */
+    public static function swap_global_user($userorid = false) {
+        global $USER;
+        static $origuser = [];
+        $user = self::get_user($userorid);
+        if ($userorid !== false) {
+            $origuser[] = $USER;
+            $USER = $user;
+        } else {
+            $USER = array_pop($origuser);
+        }
+    }
+    
+    /**
+     * Returns user object by passing user id.
+     *
+     * @param int $userorid User object or id
+     * @return object user
+     */
+    public static function get_user($userorid = false) {
+        global $USER, $DB;
+
+        if ($userorid === false) {
+            return $USER;
+        }
+
+        if (is_object($userorid)) {
+            return $userorid;
+        } else if (is_number($userorid)) {
+            if (intval($userorid) === $USER->id) {
+                $user = $USER;
+            } else {
+                $user = $DB->get_record('user', ['id' => $userorid]);
+            }
+        } else {
+            throw new coding_exception(get_string('parametermustbeobjectorintegerorstring', 'theme_remui', $userorid));
+        }
+
+        return $user;
+    }
 }

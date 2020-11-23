@@ -9,6 +9,26 @@ section.connectedSortable.blankheight div.panel.hidden{
     margin-bottom: 10px;
 }
 /* Course Progress Block */
+#courseprogress {
+  &.student-progress-visible {
+    .course-progress-settings {
+      display: none;
+    }
+  }
+  .course-progress-settings {
+    .form-check, .form-check-input, .form-check-label {
+      cursor: pointer;
+    }
+    .load-course-progress {
+      display: inline-block;
+    }
+    &.always-loading, &.load-progress {
+      #load-progress {
+        display: none;
+      }
+    }
+  }
+}
 div.dataTables_scrollHeadInner, div.dataTables_scrollHeadInner table.dataTable, div.dataTables_scrollBody table.dataTable{
   width: 100% !important;
 }

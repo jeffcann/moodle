@@ -1,3 +1,13 @@
+html[dir="rtl"] .navbar {
+    .navbar-brand {
+        @media screen and (max-width: 480px) {
+            & {
+                direction: rtl;
+                transform: translate(50%,0);
+            }
+        }
+    }
+}
 .navbar {
     background: white;
     .navbar-brand {
@@ -12,10 +22,6 @@
             position: absolute;
             left: 50%;
             transform: translate(-50%,0);
-            & {
-                direction: rtl;
-                transform: translate(50%,0);
-            }
         }
     }
     .navbar-brand-logo {
@@ -124,7 +130,7 @@
                 color: white !important;
             }
         }
-        .dropdown-menu {
+        .dropdown-menu, .popover-region-container {
             .fa {
                 color: #526069 !important;
             }
@@ -157,12 +163,12 @@
     }
     div[data-region="popover-region-container"] {
         &.dropdown-menu {
-            display: block;
             transform: scale(0);
             transition: all 250ms ease-in-out;
             transform-origin: 100% 0;
             opacity: 0;
             &.show {
+                display: block;
                 transition: all 250ms ease-in-out;
                 transform: scale(1);
                 opacity: 1;
@@ -378,3 +384,21 @@ nav.greedy .menu-toggle {
   }
   
 /** TODO: Optimize media queries and use bootstrap 4 standards */
+
+
+.navbar.fixed-top .popover-region-container {
+    top: calc(5px + #{$navbar-height});
+    max-height: 300px;
+    .popover-region-header-container{
+        max-height: calc(100vh - #{$navbar-height});
+        overflow-y: auto;
+        display: flow-root;
+    }
+    .popover-region-content-container{
+        max-height: calc(90% - #{$navbar-height}) !important;
+        height: calc(90% - #{$navbar-height}) !important;
+    }
+    .popover-region-footer-container{
+        display: flow-root;
+    }
+}

@@ -6,9 +6,9 @@
         <span class="ribbon-inner"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
     </div>
     {{/ishidden}}
-    <p class="card__owner ellipsis ellipsis-3" style="-webkit-box-orient: vertical;visibility: visible;" title="{{categoryname}}">{{categoryname}}</p>
+    <p class="card__owner ellipsis ellipsis-3" style="-webkit-box-orient: vertical;visibility: visible;" title="{{{categoryname}}}">{{{categoryname}}}</p>
     <div class="card__info">
-    {{#parentname}}<p class="font-size-12 text-white">{{parentname}}</p>{{/parentname}}
+    {{#parentname}}<p class="font-size-12 text-white">{{{parentname}}}</p>{{/parentname}}
     {{#idnumber}}<p class="card__integral">{{#str}} idnumber, moodle {{/str}}  {{idnumber}}</p>{{/idnumber}}
     <p class="font-size-12 text-white">{{#str}} courses, moodle {{/str}} {{coursecount}}</p>
     </div>

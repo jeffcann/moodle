@@ -16,9 +16,9 @@
 
 /**
  * Edwiser RemUI
- * @package    theme_remui
- * @copyright  (c) 2018 WisdmLabs (https://wisdmlabs.com/)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_remui
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -32,7 +32,7 @@ $blockshtml = $OUTPUT->blocks('side-pre', array(), 'aside');
 $hasblocks  = strpos($blockshtml, 'data-block=') !== false;
 $usercanmanage = \theme_remui\utility::check_user_admin_cap();
 
-// check aside right state
+// Check aside right state.
 if (isloggedin()) {
     $pinaside = get_user_preferences('pinaside', '');
 
@@ -45,7 +45,7 @@ if (isloggedin()) {
 }
 
 
-// if no blocks in sidebar, it will always be overlay (no pin option)
+// If no blocks in sidebar, it will always be overlay (no pin option).
 if (!$hasblocks) {
     $pinaside = '';
 }
@@ -53,7 +53,7 @@ if (!$hasblocks) {
 $extraclasses = [];
 $extraclasses [] = $pinaside;
 
-// classes to show right sidebar only if one of the below is true
+// Classes to show right sidebar only if one of the below is true.
 if ($hasblocks) {
     $extraclasses [] = 'sidebar-pinned sidebar-open';
 }
@@ -78,7 +78,7 @@ $templatecontext = [
     'initrightsidebar' => $initrightsidebar,
 ];
 
-// for all partials
+// For all partials.
 $templatecontext['sitecolor']  = \theme_remui\toolbox::get_setting('sitecolor');
 
 echo $OUTPUT->render_from_template('theme_remui/secure', $templatecontext);

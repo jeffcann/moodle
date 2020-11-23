@@ -16,15 +16,18 @@
 
 /**
  * Multianswer question renderer classes.
- * Handle shortanswer, numerical and various multichoice subquestions
  *
- * @package    qtype
- * @subpackage multianswer
- * @copyright  2010 Pierre Pichet
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Handle shortanswer, numerical and various multichoice subquestions
+ * @package   theme_remui
+ * @copyright 2010 Pierre Pichet
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace theme_remui\output\qtype_multianswer;
+
+defined('MOODLE_INTERNAL') || die();
+
 use question_attempt;
 use question_display_options;
 use question_graded_automatically;
@@ -109,7 +112,8 @@ class multiresponse_vertical_renderer extends \qtype_multianswer_multiresponse_v
                 unset($inputattributes['checked']);
             }
 
-            $class = 'r' . ($value % 2).' checkbox-custom checkbox-primary '; // our custom checkbox style - bharat - remui
+            $class = 'r' . ($value % 2).' checkbox-custom checkbox-primary ';
+            // Our custom checkbox style - bharat - remui.
             if ($options->correctness && $isselected) {
                 $thisfrac = ($ans->fraction > 0) ? $answerfraction : 0;
                 $feedbackimg = $this->feedback_image($thisfrac);

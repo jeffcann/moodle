@@ -1,6 +1,25 @@
 Change Log:
 ===========
 
+Version 1.0.15
+==============
+Fix - Default Dashboard Reset Functionality not working with RemUI Block.
+Fix - After each update, blocks were being reset for all users.
+Tweak - Course Progress Block, Fetching course progress is made optional now to improve the page loading speed.
+
+
+Version 1.0.14
+==============
+Tweak - Removed the theme dependent functions from theme RemUI and added in RemUI block.
+
+Version 1.0.13
+==============
+
+Fix - Recent Forums Ajax error when user is deleted.
+Fix - Typo Error for RemUI Analytics Block setting text.
+Fix - Updated the visibility of Each block according to user roles.
+Fix - Enrolled Users Block dropdown Special character support.
+
 v 1.0.12 
 Fix - Course progress loader issue for empty table
 Fix - JS Error Cannot read property 'length' of undefined in quiz block of remui block

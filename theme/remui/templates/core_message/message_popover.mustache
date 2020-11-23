@@ -35,8 +35,18 @@
     }
 
 }}
+
+{{^mergemessagingsidebar}}
+{{! this is for Header Menu}}
+<li class="popover-region nav-item text-center m-0">
+    <a id="message-drawer-toggle-{{uniqid}}" class="nav-link popover-region-toggle p-3" href="#sidebar-message" role="button" title="Toggle messaging drawer" aria-label="Toggle messaging drawer" data-placement="top" data-toggle="tooltip" data-original-title="{{#str}} togglemessagemenu, message {{/str}}">
+{{/mergemessagingsidebar}}
+
+{{#mergemessagingsidebar}}
+{{! this is for sidebar tab}}
 <li class="popover-region nav-item collapsed text-center m-0">
-    <a id="message-drawer-toggle-{{uniqid}}" class="nav-link popover-region-toggle p-3" data-toggle="tab" href="#sidebar-message" role="tab" aria-selected="false" data-placement="top" data-toggle="tooltip" data-original-title="{{#str}} togglemessagemenu, message {{/str}}">
+    <a id="message-drawer-toggle-{{uniqid}}" title="Messaging drawer" aria-label="Messaging drawer" class="nav-link popover-region-toggle p-3" data-toggle="tab" href="#sidebar-message" role="tab" aria-selected="false" data-placement="top" data-toggle="tooltip" data-original-title="{{#str}} togglemessagemenu, message {{/str}}">
+{{/mergemessagingsidebar}}
         <i class="icon fa fa-comment" aria-hidden="true"></i>
         <span class="wdm-msg-count font-size-10 badge badge-danger up animation-shake {{^unreadcount}}hidden{{/unreadcount}}" data-region="count-container">{{unreadcount}}</span>
     </a>

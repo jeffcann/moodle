@@ -150,20 +150,14 @@ class coursehandler {
      * @param  Array  $studentroles Student roles
      * @return Object               Course progress
      */
-    public function get_course_progress($course, $studentroles) {
+    public function get_course_progress($course, $studentroles, $loadprogress) {
         global $DB;
-        $percentage = 0;
-
-        $coursecontext = context_course::instance($course->id);
 
         $students = [];
+        $coursecontext = context_course::instance($course->id);
         foreach ($studentroles as $studentrole) {
             $result = get_role_users($studentrole->id, $coursecontext);
             $students = array_merge($students, $result);
-        }
-
-        foreach ($students as $student) {
-            $percentage += progress::get_course_progress_percentage($course, $student->id);
         }
 
         $courseprogress = new stdClass();
@@ -175,26 +169,36 @@ class coursehandler {
         $courseprogress->enddate   = date("Y M, d", substr($course->enddate, 0, 10));
         $courseprogress->timecreated = $course->timecreated;
 
-        $courseprogress->percentage = 0;
+        if ($loadprogress) {
+            $percentage = 0;
 
-        if (0 != count($students)) {
-            $courseprogress->percentage = ceil(round($percentage / count($students), 2));
+            foreach ($students as $student) {
+                $percentage += progress::get_course_progress_percentage($course, $student->id);
+            }
+            $courseprogress->percentage = 0;
+
+            if (0 != count($students)) {
+                $courseprogress->percentage = ceil(round($percentage / count($students), 2));
+            }
+        } else {
+            $courseprogress->percentage = -1;
         }
 
         $courseprogress->enrolledStudents = count($students);
 
-        return  $courseprogress;
+        return $courseprogress;
     }
 
     /**
      * Get courses data where user is enrolled as teacher
-     * @param  String  $search Search query
-     * @param  Integer $start  Start index of course
-     * @param  Integer $length End index of course
-     * @param  Array   $order  In which order courses should be arranged
-     * @return Array         Courses data
+     * @param  String  $search       Search query
+     * @param  Integer $start        Start index of course
+     * @param  Integer $length       End index of course
+     * @param  Array   $order        In which order courses should be arranged
+     * @param  Boolean $loadprogress Load course progress
+     * @return Array                 Courses data
      */
-    public function teacher_courses_data($search, $start, $length, $order) {
+    public function teacher_courses_data($search, $start, $length, $order, $loadprogress) {
         global $USER, $PAGE, $DB;
         $PAGE->set_context(context_system::instance());
         // Teacher View Dashboard
@@ -267,7 +271,7 @@ class coursehandler {
         if (count($filtered) != 0) {
             $studentroles = $DB->get_records('role', array('archetype' => 'student'));
             foreach ($filtered as $course) {
-                $temp = $this->get_course_progress($course, $studentroles);
+                $temp = $this->get_course_progress($course, $studentroles, $loadprogress);
                 $temp->backColor = 'alternate-row';
                 $coursecount += $step;
                 $temp->index = $coursecount;
@@ -438,7 +442,7 @@ class coursehandler {
         // didn't write this function again in plugin because this function
         // can't be removed from theme as used in many files
         // to avoid redundancy called function from theme as it is
-        $user = \theme_remui\utility::get_user($userorid);
+        $user = \block_remuiblck\userhandler::get_user($userorid);
         if (!$user) {
             return [];
         }
@@ -504,6 +508,7 @@ class coursehandler {
                            AND gm1.userid = :user1a
                          WHERE (cm1.groupmode <> :sepgps2a OR (gm1.userid IS NOT NULL $fgpsql))
                           AND fp1.userid <> :user2a
+                          AND u1.deleted = 0
                           AND fp1.modified > $since
                          ORDER BY fp1.modified DESC)";
             // TODO - when moodle gets private reply (anonymous) forums, we need to handle this here.
@@ -641,7 +646,7 @@ class coursehandler {
         $data = array();
         $templatecontext = array();
         $chelper = new \coursecat_helper();
-        $recentassignments = \theme_remui\utility::grading();
+        $recentassignments = $this->grading();
         if ($recentassignments) {
             $templatecontext['hasrecentassignments'] = true;
             $count = 0;
@@ -929,5 +934,156 @@ class coursehandler {
             $lastaccess->class = ($currtime - $record) > 259200 ? 'text-danger' : (($currtime - $record) > 129600 ? 'text-warning' : 'text-success');
         }
         return $lastaccess;
+    }
+
+    /**
+     * Sort function for ungraded items in the teachers personal menu.
+     *
+     * Compare on closetime, but fall back to openening time if not present.
+     * Finally, sort by unique coursemodule id when the dates match.
+     *
+     * @param object $left  Left grade
+     * @param object $right Right grade
+     * @return int
+     */
+    public static function sort_graded($left, $right) {
+        if (empty($left->closetime)) {
+            $lefttime = $left->opentime;
+        } else {
+            $lefttime = $left->closetime;
+        }
+
+        if (empty($right->closetime)) {
+            $righttime = $right->opentime;
+        } else {
+            $righttime = $right->closetime;
+        }
+
+        if ($lefttime === $righttime) {
+            if ($left->coursemoduleid === $right->coursemoduleid) {
+                return 0;
+            } else if ($left->coursemoduleid < $right->coursemoduleid) {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else if ($lefttime < $righttime) {
+            return  -1;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * Get items which have been graded.
+     *
+     * @return string grades
+     * @throws \coding_exception
+     */
+    public static function graded() {
+        $grades = self::events_graded();
+        return $grades;
+    }
+
+    /**
+     * Grading data
+     * @return array Grading data
+     */
+    public function grading() {
+        global $USER, $PAGE;
+
+        $grading = $this->all_ungraded($USER->id);
+        return $grading;
+    }
+
+    /**
+     * Get everything graded from a specific date to the current date.
+     *
+     * @return mixed Event data
+     */
+    public static function events_graded() {
+        global $DB, $USER;
+        error_log(print_r("We called", 1));
+        $params = [];
+        $coursesql = '';
+        $courses = enrol_get_my_courses();
+        $courseids = array_keys($courses);
+        $courseids[] = SITEID;
+        list($coursesql, $params) = $DB->get_in_or_equal($courseids);
+        $coursesql = 'AND gi.courseid '.$coursesql;
+
+        $onemonthago = time() - (DAYSECS * 31);
+        $showfrom = $onemonthago;
+
+        $sql = "SELECT gg.*, gi.itemmodule, gi.iteminstance, gi.courseid, gi.itemtype
+                  FROM {grade_grades} gg
+                  JOIN {grade_items} gi
+                    ON gg.itemid = gi.id $coursesql
+                 WHERE gg.userid = ?
+                   AND (gg.timemodified > ?
+                    OR gg.timecreated > ?)
+                   AND (gg.finalgrade IS NOT NULL
+                    OR gg.rawgrade IS NOT NULL
+                    OR gg.feedback IS NOT NULL)
+                   AND gi.itemtype = 'mod'
+                 ORDER BY gg.timemodified DESC";
+
+        $params = array_merge($params, [$USER->id, $showfrom, $showfrom]);
+        $grades = $DB->get_records_sql($sql, $params, 0, 5);
+
+        $eventdata = array();
+        foreach ($grades as $grade) {
+            $eventdata[] = $grade;
+        }
+
+        return $eventdata;
+    }
+
+    /**
+     * Get all ungraded items.
+     * @param int $userid
+     * @return array
+     */
+    public function all_ungraded($userid) {
+        $courseids = $this->gradeable_courseids($userid);
+
+        if (empty($courseids)) {
+            return array();
+        }
+
+        $mods = \core_plugin_manager::instance()->get_installed_plugins('mod');
+        $mods = array_keys($mods);
+
+        $grading = [];
+        foreach ($mods as $mod) {
+            $class = '\theme_remui\activity';
+            $method = $mod.'_ungraded';
+            if (method_exists($class, $method)) {
+                $grading = array_merge($grading, call_user_func([$class, $method], $courseids));
+            }
+        }
+
+        usort($grading, array($this, 'sort_graded'));
+
+        return $grading;
+    }
+
+    /**
+     * Get courses where user has the ability to view the gradebook.
+     *
+     * @param int $userid
+     * @return array
+     * @throws \coding_exception
+     */
+    public function gradeable_courseids($userid) {
+        $courses = enrol_get_all_users_courses($userid);
+        $courseids = [];
+        $capability = 'gradereport/grader:view';
+        foreach ($courses as $course) {
+            if (has_capability($capability, \context_course::instance($course->id), $userid)) {
+                $courseids[] = $course->id;
+            }
+        }
+        return $courseids;
     }
 }

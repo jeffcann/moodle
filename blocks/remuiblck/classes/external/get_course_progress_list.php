@@ -51,7 +51,8 @@ trait get_course_progress_list {
                         'dir'    => new external_value(PARAM_ALPHA, 'direction of sorting')
                     ),
                     'sorting order with column number and sorting direction'
-                )
+                ),
+                'loadprogress' => new external_value(PARAM_BOOL, 'Load course progress', VALUE_DEFAULT, false)
             )
         );
     }
@@ -62,11 +63,12 @@ trait get_course_progress_list {
      * The function itself
      * @return string welcome message
      */
-    public static function get_course_progress_list($search, $start, $length, $order) {
+    public static function get_course_progress_list($search, $start, $length, $order, $loadprogress) {
         global $PAGE;
+        $loadprogress = $loadprogress || get_user_preferences('always-load-progress', false) == true;
         $PAGE->set_context(context_system::instance());
         $coursehandler = \block_remuiblck\coursehandler::get_instance();
-        list($courses, $count) = $coursehandler->teacher_courses_data($search, $start, $length, $order);
+        list($courses, $count) = $coursehandler->teacher_courses_data($search, $start, $length, $order, $loadprogress);
         return array(
             "courses" => empty($courses) ? [] : $courses,
             "recordsTotal" => $count,

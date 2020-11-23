@@ -24,8 +24,10 @@
         left: 0;
         top: 100px;
         width: calc(100% - 500px);
-        color: white;
         padding: 75px;
+        *{
+            color: '[[setting:signuptextcolor]]';
+        }
     }
     .logininfo {
         color: white;

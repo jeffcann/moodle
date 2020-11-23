@@ -19,6 +19,7 @@
  *
  * @package   theme_remui
  * @copyright 2016 Frédéric Massart
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -150,7 +151,7 @@ $THEME->parents = [];
 $THEME->enable_dock = false;
 $THEME->csstreepostprocessor = 'theme_remui_css_tree_post_processor';
 $THEME->extrascsscallback = 'theme_remui_get_extra_scss';
-$THEME->prescsscallback = 'theme_remui_get_pre_scss';
+// $THEME->prescsscallback = 'theme_remui_get_pre_scss';
 $THEME->precompiledcsscallback = 'theme_remui_get_precompiled_css';
 $THEME->csspostprocess = 'theme_remui_process_css';
 $THEME->yuicssmodules = array();

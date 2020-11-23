@@ -52,9 +52,6 @@
 
 <section id="region-main" {{#hasblocks}}class="has-blocks mb-3"{{/hasblocks}} aria-label="{{#str}}content{{/str}}">
     <div class="bg-transparent p-0">
-        {{#hasregionmainsettingsmenu}}
-            <div class="region_main_settings_menu_proxy"></div>
-        {{/hasregionmainsettingsmenu}}
         {{{ output.course_content_header }}}
         {{> theme_remui/coursefilters }}
 
@@ -62,7 +59,7 @@
             <ul class="nav nav-tabs nav nav-tabs nav-tabs-line" role="tablist">
                 {{#tabcontent}}
                 <li class="nav-item" role="presentation">
-                    <a id="{{name}}tab" class="nav-link {{#isActive}}active show{{/isActive}} bg-transparent" data-toggle="tab" href="#{{name}}region" aria-controls="{{name}}region" role="tab" aria-selected="true">
+                    <a id="{{name}}tab" class="nav-link {{#isActive}}active show{{/isActive}} bg-transparent" data-toggle="tab" href="#{{name}}region" aria-controls="{{name}}region" role="tab" aria-selected="{{#isActive}}true{{/isActive}}{{^isActive}}false{{/isActive}}" tabindex="0">
                         {{text}}
                     </a>
                 </li>

@@ -19,6 +19,7 @@
  *
  * @package   theme_remui
  * @copyright 2016 Frédéric Massart
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -47,7 +48,7 @@ $string['choosereadme'] = '
         <div class="text-center">
             <div class="btn-group text-center" role="group" aria-label="...">
               <div class="btn-group mr-1" role="group">
-                <a href="https://knowledgebase.edwiser.org/en/category/edwiser-remui-theme-5sxjyd/" target="_blank" class="btn btn-primary btn-round">FAQ</a>
+                <a href="https://edwiser.helpscoutdocs.com/collection/78-edwiser-remui-theme" target="_blank" class="btn btn-primary btn-round">FAQ</a>
               </div>
               <div class="btn-group mr-1" role="group">
                 <a href="https://edwiser.org/remui/documentation/" target="_blank" class="btn btn-primary btn-round">Dokumentacja</a>
@@ -186,11 +187,28 @@ $string['sidebarpinned'] = 'Przypięty pasek boczny.';
 $string['sidebarunpinned'] = 'Pasek boczny odpięty.';
 $string['pinsidebar'] = 'Przypnij pasek boczny';
 $string['unpinsidebar'] = 'Odepnij pasek boczny';
+$string['primary'] = 'Podstawowy';
+$string['brown'] = 'brązowy';
+$string['cyan'] = 'Cyjan';
+$string['green'] = 'Zielony';
+$string['grey'] = 'Szary';
+$string['indigo'] = 'Indygo';
+$string['orange'] = 'Pomarańczowy';
+$string['pink'] = 'Różowy';
+$string['purple'] = 'Fioletowy';
+$string['red'] = 'Czerwony';
+$string['teal'] = 'Cyraneczka';
+$string['custom-color'] = 'Niestandardowy kolor';
+$string['dark'] = 'Ciemny';
+$string['light'] = 'Światło';
 
 // General Settings.
 $string['generalsettings' ] = 'Ustawienia ogólne';
 $string['enableannouncement'] = "Aktywuj komunikaty strony";
 $string['enableannouncementdesc'] = "Aktywuj komunikaty strony dla odwiedzających/studentów.";
+$string['enabledismissannouncement'] = "włączyć oddalenie Ogłoszenie strony";
+$string['enabledismissannouncementdesc'] = "Jeśli włączone, zezwól użytkownikom na oddalenie zapowiedź tekst.";
+
 $string['announcementtext'] = "Komunikat";
 $string['announcementtextdesc'] = "Komunikat wyświetlany w obrębie strony.";
 $string['announcementtype'] = "Typ komunikatu.";
@@ -247,8 +265,6 @@ $string['googleanalytics'] = 'Google Analytics Tracking ID';
 $string['googleanalyticsdesc'] = 'Podaj Google Analytics Tracking ID, aby uruchomić analitykę na stronie. Format ID powienien być następujący: [UA-XXXXX-Y]';
 $string['enablecoursestats'] = 'Włącz statystyki kursu';
 $string['enablecoursestatsdesc'] = 'Po włączeniu Administrator, Menedżerowie i nauczyciel zobaczą statystyki związane z kursem na stronie kursu.';
-$string['courseeditbuttonsetting'] = 'Przycisk edycji kursu';
-$string['courseeditbuttonsetting_desc'] = 'Dzięki temu ustawieniu możesz dodać dodatkowy przycisk włączania / wyłączania edycji kursu do nagłówka kursu w celu szybszej dostępności.';
 $string['enabledictionary'] = 'Włącz Słownik';
 $string['enabledictionarydesc'] = 'Jeśli aktywne, funkcja Słownik będzie aktywowana i będzie pokazywać znaczenie zaznaczonego tekstu w oknie popup.';
 $string['more'] = 'More...';
@@ -453,11 +469,14 @@ $string['licensenotactiveadmin'] = '<strong>Uwaga!</strong> Licencja nie jest ak
 $string['activatelicense'] = 'Aktywuj licencję';
 $string['deactivatelicense'] = 'Dezaktywuj licencję';
 $string['renewlicense'] = 'Odnów licencję';
+$string['deactivated'] = 'Dezaktywowano';
 $string['active'] = 'Aktywna';
 $string['notactive'] = 'Nieaktywna';
 $string['expired'] = 'Wygasła';
 $string['licensekey'] = 'Klucz licencyjny';
 $string['licensestatus'] = 'Status licencji';
+$string['no_activations_left'] = 'Limit przekroczony';
+$string['activationfailed'] = 'Aktywacja klucza licencyjnego nie powiodła się. Spróbuj ponownie później.';
 $string['noresponsereceived'] = 'Brak odpowiedzi z serwera. Proszę spróbować później.';
 $string['licensekeydeactivated'] = 'Klucz licencyjny został dezaktywowany.';
 $string['siteinactive'] = 'Strona nieaktywna (Naciśnij Aktywuj licencję w cely aktywowania wtyczki).';
@@ -471,7 +490,7 @@ $string['nolicenselimitleft'] = 'Osiągnięto maksymalny limit aktywacji, nie ak
 
 // News And Updates Page.
 $string['newsandupdates'] = 'Aktualności i Aktualizacje';
-$string['newupdatemessage'] = 'Dostępna jest nowa aktualizacja dla RemUI.';
+$string['newupdatemessage'] = 'Dostępna jest nowa aktualizacja dla RemUI. <a class="text-white" href="{$a}"><u>Kliknij tutaj</u></a> aby zobaczyć.';
 $string['currentversionmessage'] = 'Aktualna wersja to: ';
 $string['downloadupdate'] = 'Pobierz aktualizację';
 $string['latestversionmessage'] = 'Korzystasz z najnowszej wersji RemUI.';
@@ -537,7 +556,7 @@ $string['searchcourses'] = "Szukaj kursów";
 
 $string['hiddencourse'] = 'Ukryty kurs';
 
-// Usage tracking
+// Usage tracking.
 $string['enableusagetracking'] = "Włącz śledzenie użycia";
 
 $string['enableusagetrackingdesc'] = "<strong>UWAGA ŚLEDZENIA UŻYTKOWANIA</strong>
@@ -551,3 +570,37 @@ $string['enableusagetrackingdesc'] = "<strong>UWAGA ŚLEDZENIA UŻYTKOWANIA</str
 <p>Powiedziawszy, że nie zbieramy twoich danych osobowych ani twoich studentów podczas tego procesu. Możesz wyłączyć to we wtyczce, ilekroć chcesz zrezygnować z tej usługi.</p>
 
 <p>Przegląd zebranych danych jest dostępny <strong><a href='https://forums.edwiser.org/topic/67/anonymously-tracking-the-usage-of-edwiser-products' target='_blank'>tutaj</a></strong>.</p>";
+
+$string['focusmodesettings'] = 'Focus Mode Settings';
+$string['enablefocusmode'] = 'Enable Focus Mode';
+$string['enablefocusmodedesc'] = 'Enabling this setting will open the course and activity page such a way so that students will not lose focus of main Course content';
+$string['focusmodeenabled'] = 'Tryb ostrości włączony';
+$string['focusmodedisabled'] = 'Tryb ostrości wyłączony';
+$string['coursedata'] = 'Dane kursu';
+
+$string['prev'] = 'Poprzedni';
+$string['next'] = 'Kolejny';
+
+// RemUI one-click update
+$string['errors'] = 'Błędy';
+$string['invalidzip'] = 'Nieprawidłowy plik zip. <b>{$a}</b>';
+$string['errorfetching'] = 'Błąd podczas pobierania ZIP wtyczki. <b>{$a}</b>';
+$string['errorfetchingexist'] = 'Błąd podczas pobierania ZIP wtyczki: istnieje lokalizacja docelowa. <b>{$a}</b>';
+$string['unabletounzip'] = 'Nie można rozpakować <b>{$a}</b>';
+$string['unabletoloadplugindetails'] = 'Nie można załadować szczegółów wtyczki <b>{$a}</b>';
+$string['requirehigherversion'] = 'Wymaga wersji Moodle: <b>{$a}</b>';
+$string['noupdates'] = 'Wszystko jest aktualne.';
+$string['invalidjsonfile'] = 'Błąd: nieprawidłowy plik JSON listy produktów Edwiser.';
+$string['recommendation'] = 'Polecane wtyczki';
+$string['comeswith'] = 'Pochodzi z: {$a}';
+$string['changelog'] = 'Changelog';
+$string['currentrelease'] = 'Bieżąca wersja: {$a}';
+$string['updateavailable'] = 'Dostępna aktualizacja: {$a}';
+$string['uptodate'] = 'Aktualny';
+
+// Information center
+$string['informationcenter'] = 'Centrum Informacji';
+
+$string['nocoursefound'] = 'Nie znaleziono kursu';
+
+$string['badges'] = 'Odznaki';

@@ -24,10 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020021100;
+$plugin->version   = 2020071500;
 $plugin->requires  = 2017111300;
 $plugin->maturity  = MATURITY_STABLE; // This version's maturity level.
-$plugin->release   = '1.0.12';
+$plugin->release   = '1.0.15';
 $plugin->component = 'block_remuiblck';
 
 // ********************* CHECK THIS PLUGIN DEPENDECIES******************************//

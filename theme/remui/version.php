@@ -15,17 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * remui.
+ * Theme remui.
  *
- * @package    theme_remui
+ * @package   theme_remui
  * @copyright  2016 Frédéric Massart
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020021100;
+$plugin->version   = 2020102000;
 $plugin->requires  = 2018112800;
 $plugin->maturity  = MATURITY_STABLE; // This version's maturity level.
-$plugin->release   = '3.8.2';
+$plugin->release   = '3.9.4';
 $plugin->component = 'theme_remui';

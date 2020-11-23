@@ -38,6 +38,8 @@ class block_remuiblck extends block_base
         user_preference_allow_ajax_update('remui_layout_top', PARAM_RAW);
         user_preference_allow_ajax_update('remui_layout_left', PARAM_RAW);
         user_preference_allow_ajax_update('remui_layout_right', PARAM_RAW);
+        user_preference_allow_ajax_update('always-load-progress', PARAM_BOOL);
+        user_preference_allow_ajax_update('always-load-warning', PARAM_BOOL);
 
         global $PAGE, $CFG;
         if ($this->content !== null) {
@@ -62,7 +64,9 @@ class block_remuiblck extends block_base
             'noofstudents',
             'showingfromto',
             'selectastudent',
-            'nousersenrolledincourse'
+            'nousersenrolledincourse',
+            'alwaysload',
+            'alwaysloadwarning'
         ], 'block_remuiblck');
         $PAGE->requires->strings_for_js([
             'sendmessage',

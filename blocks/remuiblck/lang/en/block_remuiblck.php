@@ -59,6 +59,13 @@ $string['status'] = "Status";
 $string['back'] = "Back";
 $string['enrolleduserstats'] = 'Enrolled Users Stats';
 
+// Course progress
+$string['alwaysload'] = 'Always load progress';
+$string['alwaysloaddesc'] = 'When checked course progress will be always loaded.';
+$string['alwaysloadwarning'] = 'For large number of courses, progress calculation takes long time. This will affect loading time of dashboard page. Warning will disappear permanently if you continue. Continue?';
+$string['loadcourseprogress'] = 'Load progress';
+$string['loadcourseprogressdesc'] = 'When checked course progress will be loaded. On page refresh it will be reset.';
+
 // Course Analytics
 $string['showing'] = 'Showing';
 $string['showingfromto'] = 'Showing {$a->start} to {$a->to} of {$a->total}';
@@ -182,7 +189,7 @@ $string['dashboardsettingdesc'] = 'Dashboard Settings will have the settings abo
 $string['courseprogressblock'] = 'Course Progress Block';
 $string['enrolledusersblock'] = 'Enrolled Users Block';
 $string['quizattemptsblock'] = 'Quiz Attempts Block';
-$string['courseanlyticsblock'] = 'Course Anlytics Block';
+$string['courseanlyticsblock'] = 'Course Analytics Block';
 $string['latestmembersblock'] = 'Latest Members Block';
 $string['addnotesblock'] = 'Add Notes Block';
 $string['recentfeedbackblock'] = 'Recent Feedback Block';
@@ -191,7 +198,7 @@ $string['managecoursesblock'] = 'Manage Course Block';
 $string['scheduletaskblock'] = 'To Do List Block';
 
 $string['courseprogressblockdesc'] = 'This block is visible to Teachers & Course Creators. It displays the pace at which students are progressing in a course.';
-$string['enrolledusersblockdesc'] = 'This block is visible to Teachers, Managers & Admins. It graphically displays all the students who have registered in a course.';
+$string['enrolledusersblockdesc'] = 'This block is visible to Managers & Admins. It graphically displays all the students who have registered in a course.';
 $string['quizattemptsblockdesc'] = 'This block is visible to Teachers & Course Creators. It displays a graphical report of all the quiz attempts and non-attempts by students.';
 $string['courseanlyticsblockdesc'] = 'This block works best for Students. It displays a graphical report of all the grades that you have earned in enrolled courses.';
 $string['latestmembersblockdesc'] = 'This block is visible to Teachers, Managers & Admins. It displays all the students who recently registered to the LMS.';

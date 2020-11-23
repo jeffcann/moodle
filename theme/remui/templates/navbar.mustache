@@ -21,7 +21,7 @@
     <div class="navbar-brand navbar-brand-center p-0 m-0 h-100">
         {{# output.should_display_logo }}
         {{# isiconsitename }}
-            <a class="text-white d-flex align-items-center justify-content-center h-100 w-full text-decoration-none" href="{{{ config.wwwroot }}}">
+            <a class="text-white d-flex align-items-center justify-content-center h-100 w-full text-decoration-none" href="{{{ config.wwwroot }}}" aria-label="{{ sitename }} - {{#str}}brandname, theme_remui{{/str}}">
                 <span class="navbar-brand-logo mini"><i class="fa fa-{{siteicon}}"></i></span>
                 <span class="navbar-brand-logo font-weight-bold">
                     <i class="fa fa-{{siteicon}}"></i>&nbsp;
@@ -29,9 +29,9 @@
                 </span>
             </a>
         {{/ isiconsitename }}
-            
+
         {{# islogo }}
-            <a class="text-white d-flex align-items-center justify-content-center h-100 w-full text-decoration-none" href="{{{ config.wwwroot }}}">
+            <a class="text-white d-flex align-items-center justify-content-center h-100 w-full text-decoration-none" href="{{{ config.wwwroot }}}" aria-label="{{#str}}brandlogo, theme_remui{{/str}}">
                 <span class="navbar-brand-logo mini" style="background-image: url({{ logominiurl }});
                     background-position: center; background-size: contain; background-repeat: no-repeat;"></span>
                 <span class="navbar-brand-logo" style="background-image: url({{ logourl }});
@@ -45,7 +45,7 @@
         <button aria-expanded="{{#navdraweropen}}true{{/navdraweropen}}{{^navdraweropen}}false{{/navdraweropen}}" aria-controls="nav-drawer" type="button" class="btn nav-link float-sm-left  bg-transparent" data-action="toggle-drawer" data-side="left" data-preference="drawer-open-nav">{{#pix}}i/menubars{{/pix}}<span class="sr-only">{{#str}}sidepanel, core{{/str}}</span></button>
     </div>
     <div class="nav-item" id="toggleFullscreen" title="{{#str}}togglefullscreen, theme_remui{{/str}}">
-        <a class="nav-link icon m-0 px-3" data-toggle="fullscreen" href="#" role="button">
+        <a class="nav-link icon m-0 px-3" data-toggle="fullscreen" href="#" role="button" aria-label="{{#str}}togglefullscreen, theme_remui{{/str}}" >
             {{! Expand Icon SVG }}
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="expand" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-expand fa-w-14 fa-3x"><path fill="currentColor" d="M0 180V56c0-13.3 10.7-24 24-24h124c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H64v84c0 6.6-5.4 12-12 12H12c-6.6 0-12-5.4-12-12zM288 44v40c0 6.6 5.4 12 12 12h84v84c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12V56c0-13.3-10.7-24-24-24H300c-6.6 0-12 5.4-12 12zm148 276h-40c-6.6 0-12 5.4-12 12v84h-84c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h124c13.3 0 24-10.7 24-24V332c0-6.6-5.4-12-12-12zM160 468v-40c0-6.6-5.4-12-12-12H64v-84c0-6.6-5.4-12-12-12H12c-6.6 0-12 5.4-12 12v124c0 13.3 10.7 24 24 24h124c6.6 0 12-5.4 12-12z" class=""></path></svg>
             {{! Collapse Icon SVG }}
@@ -66,9 +66,11 @@
 
     <ul class="navbar-nav h-100 wdm-custom-menus links">
         {{#hasrecent}}
-            <li class="nav-item dropdown" id="recentCourses">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" data-animation="scale-up" aria-expanded="true" role="button">{{#str}}recent, theme_remui{{/str}}</a>
-                <div class="dropdown-menu" role="menu">
+            <li class="dropdown nav-item" id="recentCoursesInner" >
+                <a class="dropdown-toggle nav-link" id="drop-down-{{uniqid}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Recent Courses" aria-label="Recent Course" aria-controls="drop-down-menu-{{uniqid}}">
+                    {{#str}}recent, theme_remui{{/str}}
+                </a>
+                <div class="dropdown-menu" role="menu" id="drop-down-menu-{{uniqid}}" aria-labelledby="drop-down-{{uniqid}}">
                     {{#recentcourses}}
                     <a class="dropdown-item" role="menuitem" href="{{{ config.wwwroot }}}/course/view.php?id={{{id}}}">{{{fullname}}}</a>
                     {{/recentcourses}}
@@ -84,16 +86,16 @@
 	<!-- collapsible menu -->
     <button class="menu-toggle"><span><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span></button>
     <ul class='hidden-links hidden'></ul>
-    
+
     <!-- login menu toggler on mobile -->
     <button type="button" class="navbar-toggler">
         <i class="icon fa fa-ellipsis-v" aria-hidden="true"></i>
     </button>
-    
+
     <ul class="nav navbar-nav ml-auto mr-2 h-100 right-menu justify-content-end">
-        <div class="d-none d-lg-block">
+        
         {{{ output.search_box }}}
-        </div>
+
         <!-- navbar_plugin_output : 'message', 'notifications' and 'chat sidebar' toggles -->
         <li class="nav-item">
         {{{ output.navbar_plugin_output }}}

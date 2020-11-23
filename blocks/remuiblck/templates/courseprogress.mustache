@@ -15,6 +15,13 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{^cannotview}}
+<div class='course-progress-settings d-none {{#alwaysload}} always-loading {{/alwaysload}}'>
+    <button class="btn btn-primary" id="load-progress" title="{{#str}} loadcourseprogressdesc, block_remuiblck {{/str}}">{{#str}} loadcourseprogress, block_remuiblck {{/str}}</button>
+    <div class="form-check d-inline-block" title="{{#str}} alwaysloaddesc, block_remuiblck {{/str}}">
+        <input type="checkbox" class="form-check-input" id="always-load-progress" {{#alwaysload}} checked {{/alwaysload}}>
+        <label class="form-check-label" for="always-load-progress">{{#str}} alwaysload, block_remuiblck {{/str}}</label>
+    </div>
+</div>
 <div class="block-processing">
     <div class="block-processing-icon"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 </div>
@@ -47,7 +54,7 @@
 require(['theme_remui/babel-external-helpers'], function (babelHelpers) {
     window.babelHelpers = babelHelpers;
     require(['block_remuiblck/course_progress'], function(courseprogress) {
-      courseprogress.init('#course-progress-{{uniqid}}');
+      courseprogress.init('[data-block="remuiblck"] #courseprogress', {{{alwaysloadwarning}}});
     });
 });
 {{/js}}

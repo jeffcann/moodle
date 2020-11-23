@@ -55,6 +55,19 @@
     }
 }
 
+.block_recentlyaccessedcourses, .block_myoverview {
+    .dashboard-card-deck {
+        padding-left: map-get($spacers, 3);
+        padding-right: map-get($spacers, 3);
+    }
+    .slick-prev {
+        left: 0px !important;
+    }
+    .slick-next {
+        right: 0px !important;
+    }
+}
+
 .slick-prev {
     left: -10px !important;
     &::before {
@@ -91,7 +104,7 @@
     right: 0;
     .card-footer {
         background: transparent !important;
-        padding: 0 !important; 
+        padding: 0 !important;
         .progress {
             border: 0 !important;
             border-radius: 0 !important;
@@ -158,4 +171,10 @@ section.block_remuiblck {
  **/
  .font-size-13 {
     font-size: 13px;
+}
+
+// Text color issue
+.block_remuiblck .course-progress-block .panel-info .panel-action {
+    color: unset;
+    cursor: pointer;
 }

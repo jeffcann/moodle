@@ -44,7 +44,11 @@ trait get_enrolled_users_by_course {
      * @return string welcome message
      */
     public static function get_enrolled_users_by_course($courseid, $options = array()) {
-        return core_enrol_external::get_enrolled_users($courseid, $options = array());
+        $context = \context_course::instance($courseid);
+        if (has_capability('moodle/notes:manage', $context)) {
+            return core_enrol_external::get_enrolled_users($courseid, $options = array());
+        }
+        return array();
     }
     /**
      * Returns description of method result value

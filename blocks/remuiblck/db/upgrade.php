@@ -57,9 +57,8 @@ require_once($CFG->dirroot . '/my/lib.php');
 function xmldb_block_remuiblck_upgrade($oldversion, $block) {
     global $CFG, $DB, $CFG;
 
-    $dbman = $DB->get_manager();
-
     if ($oldversion < 2019052800) {
+        $dbman = $DB->get_manager();
 
         // Define table block_remuiblck_tasklist to be created.
         $table = new xmldb_table('block_remuiblck_taskslist');
@@ -88,33 +87,33 @@ function xmldb_block_remuiblck_upgrade($oldversion, $block) {
 
         // Remui Block savepoint reached.
         upgrade_block_savepoint(true, 2019052800, 'remuiblck');
+
+        $block = $block;
+
+        $DB->delete_records('block_instances', array('blockname' => 'remuiblck'));
+        $DB->delete_records('user_preferences', array('name' => 'remuiblck_pos_state'));
+        $DB->delete_records('config_plugins', array('plugin' => 'block_remuiblck', 'name' => 'blocks_flag_instl'));
+
+        $systempage = $DB->get_record('my_pages', array('userid' => null, 'private' => 1));
+
+        $page = new moodle_page();
+        $page->set_context(context_system::instance());
+
+        // selecting default region for blocks i.e. content
+        $page->blocks->add_region('content');
+
+        // Adding multiple blocks
+        if ($systempage) {
+            $page->blocks->add_block('remuiblck', 'content', 5, false, 'my-index', $systempage->id);
+        }
+
+        // This will reset the dashboard for everyone using this site.
+        my_reset_page_for_all_users(MY_PAGE_PRIVATE, 'my-index');
+
+        // setting flags for blocks addition on dashboard page
+        $blockslist = get_default_blocks_list();
+        set_config('blocks_list_pos', serialize($blockslist), 'block_remuiblck');
     }
-
-    $block = $block;
-
-    $DB->delete_records('block_instances', array('blockname' => 'remuiblck'));
-    $DB->delete_records('user_preferences', array('name' => 'remuiblck_pos_state'));
-    $DB->delete_records('config_plugins', array('plugin' => 'block_remuiblck', 'name' => 'blocks_flag_instl'));
-
-    $systempage = $DB->get_record('my_pages', array('userid' => null, 'private' => 1));
-
-    $page = new moodle_page();
-    $page->set_context(context_system::instance());
-
-    // selecting default region for blocks i.e. content
-    $page->blocks->add_region('content');
-
-    // Adding multiple blocks
-    if ($systempage) {
-        $page->blocks->add_block('remuiblck', 'content', 5, false, 'my-index', $systempage->id);
-    }
-
-    // This will reset the dashboard for everyone using this site.
-    my_reset_page_for_all_users(MY_PAGE_PRIVATE, 'my-index');
-
-    // setting flags for blocks addition on dashboard page
-    $blockslist = get_default_blocks_list();
-    set_config('blocks_list_pos', serialize($blockslist), 'block_remuiblck');
 
     return true;
 }

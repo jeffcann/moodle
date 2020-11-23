@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Edwiser RemUI
  * Format weeks renderer
- * @package    theme_remui
- * @copyright  (c) 2018 WisdmLabs (https://wisdmlabs.com/)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_remui
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace theme_remui\output;
@@ -28,6 +27,11 @@ use moodle_page;
 use stdClass;
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Weeks format renderer
+ * @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/) <support@wisdmlabs.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class format_weeks_renderer extends \format_weeks_renderer {
 
     /**
@@ -100,7 +104,7 @@ class format_weeks_renderer extends \format_weeks_renderer {
         if (!empty($cmlist)) {
             $temp = '<span class="wdm-sectionname row m-0"><div class="col-11 p-0">'
             .$this->section_title($section, $section->course).
-            '</div><i class="fa fa-angle-up toggle-section"></i></span>';
+            '</div><i class="fa fa-angle-up toggle-section"  tabindex="0" aria-expanded="true" aria-label="Section Toggler" role="button" aria-controls="Section-'.$section->id .'"></i></span>';
         }
 
         $o .= $this->output->heading($temp, 4, 'sectionname' . $classes);

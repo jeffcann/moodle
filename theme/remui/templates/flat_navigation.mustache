@@ -63,7 +63,7 @@
     {{/showdivider}}
     {{#show}}
     {{#action}}
-    <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{{action}}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="{{get_indent}}" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}}>
+    <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{{action}}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="{{get_indent}}" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}} aria-label="{{text}}">
         <div class="ml-{{get_indent}}">
             <div class="media">
             {{#icon.pix}}
@@ -80,7 +80,7 @@
     {{#show}}
     {{^action}}
     {{#mycoursestab}}
-        <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{mycoursesurl}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="{{get_indent}}" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}}>
+        <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{mycoursesurl}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="{{get_indent}}" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}} aria-label="My Courses Link">
             <div class="ml-{{get_indent}}">
                 <div class="media">
                 {{#icon.pix}}
@@ -88,19 +88,19 @@
                         {{#pix}}{{{icon.pix}}}, {{{icon.component}}}, {{{icon.alt}}}{{/pix}}
                     </span>
                 {{/icon.pix}}
-                    <span class="media-body d-flex justify-content-between align-items-center">
+                    <div class="media-body justify-content-between align-items-center">
                         {{{text}}}
-                        <div class="">
-                            <i class="fa fa-angle-down align-items-center justify-content-center toggle-menu" data-key="{{key}}" aria-hidden="true"></i>
-                            <i class="fa fa-angle-right align-items-center justify-content-center toggle-menu show" data-key="{{key}}" aria-hidden="true"></i>
-                        </div>
-                    </span>
+                        <span>
+                            <i class="fa fa-angle-right align-items-center justify-content-center toggle-menu show" data-key="{{key}}" tabindex="0" aria-label="{{#str}}accordioncontrolmycourses, theme_remui{{/str}}" aria-controls="mycoursessubmenu" aria-expanded="false" role="button"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </a>
-        <div class="mycoursesubmenu" data-parent-key="mycourses">
+
+        <div id="mycoursessubmenu" class="mycoursesubmenu" data-parent-key="mycourses" role="menu" aria-label="My courses list">
             {{#mycourseschild}}
-                <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{{action}}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="1" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}}>
+                 <a class="list-group-item list-group-item-action {{#isactive}}active{{/isactive}}" href="{{{action}}}" data-key="{{key}}" data-isexpandable="{{isexpandable}}" data-indent="1" data-showdivider="{{showdivider}}" data-type="{{type}}" data-nodetype="{{nodetype}}" data-collapse="{{collapse}}" data-forceopen="{{forceopen}}" data-isactive="{{isactive}}" data-hidden="{{hidden}}" title="{{{text}}}" data-preceedwithhr="{{preceedwithhr}}" {{#parent.key}}data-parent-key="{{.}}"{{/parent.key}} role="menuitem" tabindex="-1">
                     <div class="ml-1">
                         <div class="media">
                         {{#icon.pix}}
@@ -124,13 +124,13 @@
                         {{#pix}}{{{icon.pix}}}, {{{icon.component}}}, {{{icon.alt}}}{{/pix}}
                     </span>
                 {{/icon.pix}}
-                    <span class="media-body d-flex justify-content-between align-items-center">
+                    <div class="media-body d-flex justify-content-between align-items-center">
                         {{{text}}}
-                        <div class="">
+                        <span>
                             <i class="fa fa-angle-down align-items-center justify-content-center toggle-menu" data-key="{{key}}" aria-hidden="true"></i>
                             <i class="fa fa-angle-right align-items-center justify-content-center toggle-menu show" data-key="{{key}}" aria-hidden="true"></i>
-                        </div>
-                    </span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

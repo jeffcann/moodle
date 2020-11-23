@@ -37,7 +37,7 @@ trait courses_data {
      * @return array               Array of categories with category details
      */
     public function get_category_details($categories, $start = 0, $limit = 20) {
-        global $OUTPUT, $CFG, $USER;
+        global $OUTPUT, $CFG, $USER, $DB;
         $result = array();
 
         $activeflag = true;
@@ -52,6 +52,12 @@ trait courses_data {
                 $rescategories['active'] = true;
                 $activeflag = false;
             }
+
+            // Skip category id deleted or not exists
+            if (!$DB->record_exists('course_categories', array('id' => $category))) {
+                continue;
+            }
+
             if (class_exists('core_course_category')) {
                 $category = \core_course_category::get($category, MUST_EXIST, true);
             } else if ('coursecat') {
@@ -66,7 +72,12 @@ trait courses_data {
 
             $rescategories['categoryid'] = $category->id;
             $rescategories['categoryname'] = strip_tags(format_text($category->name));
-            $catsummary = strip_tags(format_text($category->description));
+            
+            $categorycontext = context_coursecat::instance($category->id);
+            $text = $category->description;
+            $text = file_rewrite_pluginfile_urls($text, 'pluginfile.php', $categorycontext->id, 'coursecat', 'description', null);
+            $catsummary = strip_tags(format_text($text));
+
             $catsummary = preg_replace('/\n+/', '', $catsummary);
             $catsummary = strlen($catsummary) > 150 ? mb_substr($catsummary, 0, 150) . "..." : $catsummary;
             $rescategories['categorydesc'] = $catsummary;
@@ -111,13 +122,19 @@ trait courses_data {
         $cattable = 'catids' . $sesskey;
         if (is_numeric($categories) || is_array($categories)) {
             if (is_numeric($categories)) {
-                $categories = utility::get_allowed_categories($categories);
+                $categories = \theme_remui_coursehandler::get_allowed_categories($categories);
             } else {
                 $categories = $this->get_categories($categories);
             }
             if (!empty($categories)) {
-                $coursehandler->create_temp_table($cattable, $categories);
-                $join = " INNER JOIN {$CFG->prefix}$cattable catids ON c.category = catids.id";
+                $cats = [];
+                foreach ($categories as $category) {
+                    $cats[] = (object)[
+                        'tempid' => $category
+                    ];
+                }
+                $coursehandler->create_temp_table($cattable, $cats);
+                $join = " INNER JOIN {" . $cattable . "} catids ON c.category = catids.tempid";
             }
         }
 
@@ -174,10 +191,10 @@ trait courses_data {
     public function get_categories($categories) {
         global $DB;
         if (empty($categories)) {
-            return \theme_remui\utility::get_allowed_categories('all');
+            return \theme_remui_coursehandler::get_allowed_categories('all');
         }
         foreach ($categories as $category) {
-            $cats = \theme_remui\utility::get_allowed_categories($category);
+            $cats = \theme_remui_coursehandler::get_allowed_categories($category);
             foreach ($cats as $cat) {
                 if (!in_array($cat, $categories)) {
                     array_push($categories, $cat);

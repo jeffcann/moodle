@@ -30,10 +30,7 @@ trait addnotes_renderer {
      * @return string HTML string
      */
     public function render_remuiblck_addnotes(\block_remuiblck\output\remuiblck_addnotes $obj) {
-        $systemcontext = \context_system::instance();
-        if (!has_capability('moodle/notes:manage', $systemcontext)) {
-            return '';
-        }
+        
         return $this->render_from_template('block_remuiblck/addnotes', $obj->export_for_template($this));
     }
 }

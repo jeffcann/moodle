@@ -52,8 +52,10 @@
 
 <body {{{ bodyattributes }}}>
 
-{{> theme_remui/navbar }}
-{{> theme_remui/nav-drawer }}
+    {{#focusdata.enabled}} {{> theme_remui/navbar_fm }} {{/focusdata.enabled}}
+    {{> theme_remui/navbar }}
+    {{> theme_remui/nav-drawer }}
+
 <div id="page-wrapper">
     {{{ output.standard_top_of_body_html }}}
     <div id="page">

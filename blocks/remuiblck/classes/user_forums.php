@@ -80,7 +80,7 @@ class user_forums
      * @param bool|int $forumlimit
      */
     public function __construct($userorid = false, $forumlimit = false) {
-        $this->user = \theme_remui\utility::get_user($userorid);
+        $this->user = \block_remuiblck\userhandler::get_user($userorid);
         if (empty($this->user) || empty($this->user->id)) {
             throw new coding_exception('Failed to get user from '.var_export($userorid, true));
         }
@@ -267,7 +267,7 @@ class user_forums
      * @throws \coding_exception
      */
     protected function populate_forums() {
-        \theme_remui\utility::swap_global_user($this->user->id);
+        \block_remuiblck\userhandler::swap_global_user($this->user->id);
 
         // Note - we don't include the site in the list of courses. This is intentional - we want student engagement to
         // be increased in courses where learning takes place and the front page is unlikely to fit that model.
@@ -299,6 +299,6 @@ class user_forums
         $this->hsuforumids = array_keys($hsuforums);
         $this->hsuforumidsallgroups = $this->forumids_accessallgroups($hsuforums, 'hsuforum');
 
-        \theme_remui\utility::swap_global_user(false);
+        \block_remuiblck\userhandler::swap_global_user(false);
     }
 }

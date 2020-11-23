@@ -194,6 +194,11 @@ ellipsis-2.bg-purple-500 {
     }
 
     .course_card {
+        .card-link {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
         .date {
             position: absolute;
             top: 0;
@@ -268,10 +273,12 @@ ellipsis-2.bg-purple-500 {
         bottom: 120px;
     }
 }
-
-#page-course-index-category #region-main-settings-menu,
-#page-course-index-category .region_main_settings_menu_proxy {
-    display: none;
+#page-course-index-category {
+    .coursesearchbox .input-group-append a,
+    #region-main-settings-menu,
+    .region_main_settings_menu_proxy {
+        display: none;
+    }
 }
 
 .ellipsis {
@@ -291,4 +298,7 @@ ellipsis-2.bg-purple-500 {
        -webkit-line-clamp: 3;
     }
 }
-  
+
+/*Course category dropdown issue on Course archive page*/
+.bootstrap-select.show .dropdown-menu{max-height: 300px !important;}
+.bootstrap-select.btn-group .dropdown-menu.inner { max-height : 230px !important; }
