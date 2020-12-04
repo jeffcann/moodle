@@ -107,9 +107,16 @@ class qtype_musicaldictation_question
                     // if the note is not a rest or bar, check the pitch
                     $is_rest = strpos($responsenote->duration, 'r') > 0;
                     $is_bar = !!$responsenote->bar;
-                    if(!$is_bar && !$is_rest && $responsenote->keys[0] !== $note->keys[0]) {
-                        array_push($errors, "One or more mistakes with rhythm and/or pitch (check pitch @ {$staveidx}/{$voiceidx}/{$noteidx})");
-                        break;
+                    if(!$is_bar && !$is_rest) {
+                        if($responsenote->keys[0] !== $note->keys[0]) {
+                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check pitch @ {$staveidx}/{$voiceidx}/{$noteidx})");
+                            break;
+                        }
+
+                        if($responsenote->accidental !== $note->accidental) {
+                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check accidental @ {$staveidx}/{$voiceidx}/{$noteidx})");
+                            break;
+                        }
                     }
                 }
 
@@ -125,7 +132,6 @@ class qtype_musicaldictation_question
                 }
             }
         }
-
 
         return $errors;
     }
