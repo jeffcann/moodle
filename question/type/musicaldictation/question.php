@@ -71,10 +71,12 @@ class qtype_musicaldictation_question
 
     public function format_generalfeedback($qa)
     {
+        $feedback = $this->format_text($this->generalfeedback, $this->generalfeedbackformat, $qa, 'question', 'generalfeedback', $this->id);
         $response = json_decode($qa->get_response_summary());
         $answer = json_decode($qa->get_right_answer_summary());
         $errors = $this->find_errors($response, $answer);
-        return (count($errors) === 0) ? "" : implode("<br/>", $errors);
+        $errorText = (count($errors) === 0) ? '' : implode('<br/>', $errors);
+        return "{$errorText}<br/>{$feedback}";
     }
 
     protected function find_errors($response, $answer) {
