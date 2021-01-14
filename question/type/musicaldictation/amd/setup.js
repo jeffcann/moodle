@@ -20,7 +20,7 @@ function resizeForDictation() {
 
     setTimeout(() => {
         document.querySelector("div[role=main]").scrollLeft = 10000;
-        document.querySelector("html").scrollTop = 160;
+        document.querySelector("html").scrollTop = 80;
     }, 150);
 }
 
