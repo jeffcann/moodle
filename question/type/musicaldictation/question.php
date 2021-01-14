@@ -100,7 +100,8 @@ class qtype_musicaldictation_question
 
                     // check note length (rhythm)
                     if($responsenote->duration !== $note->duration) {
-                        array_push($errors, "One or more mistakes with rhythm and/or pitch (check duration @ {$staveidx}/{$voiceidx}/{$noteidx})");
+//                        array_push($errors, "One or more mistakes with rhythm and/or pitch (check duration @ {$staveidx}/{$voiceidx}/{$noteidx})");
+                        array_push($errors, "One or more mistakes with rhythm and/or pitch");
                         break;
                     }
 
@@ -109,12 +110,14 @@ class qtype_musicaldictation_question
                     $is_bar = !!$responsenote->bar;
                     if(!$is_bar && !$is_rest) {
                         if($responsenote->keys[0] !== $note->keys[0]) {
-                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check pitch @ {$staveidx}/{$voiceidx}/{$noteidx})");
+//                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check pitch @ {$staveidx}/{$voiceidx}/{$noteidx})");
+                            array_push($errors, "One or more mistakes with rhythm and/or pitch");
                             break;
                         }
 
                         if($responsenote->accidental !== $note->accidental) {
-                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check accidental @ {$staveidx}/{$voiceidx}/{$noteidx})");
+//                            array_push($errors, "One or more mistakes with rhythm and/or pitch (check accidental @ {$staveidx}/{$voiceidx}/{$noteidx})");
+                            array_push($errors, "One or more mistakes with rhythm and/or pitch");
                             break;
                         }
                     }
